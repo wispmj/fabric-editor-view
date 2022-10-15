@@ -58,6 +58,7 @@
 
 <script>
 import { v4 as uuid } from 'uuid';
+import options from '../plugin/options'
 import $ from 'jquery'
 
 const defaultPosition = {
@@ -69,6 +70,7 @@ export default {
   props: ['canvasObj'],
   data() {
     return {
+      options,
       width: 1280,
       height: 720,
       rect: [],
@@ -343,9 +345,9 @@ export default {
       });
       this.canvas.remove(this.activeShape).remove(this.activeLine);
       var polygon = new fabric.Polygon(points, {
-        stroke: this.color,
+        stroke: this.options.borderColor,
         strokeWidth: this.drawWidth,
-        fill: "rgba(255, 255, 255, 0)",
+        fill: this.options.fillColor,
         opacity: 1,
         hasBorders: false,
         hasControls: false,
@@ -398,8 +400,8 @@ export default {
           path += " L " + (x2 - centerx - w1) + " " + (y2 - centery + h1);
           path += " Z";
           canvasObject = new fabric.Path(path, {
-            stroke: this.color,
-            fill: this.color,
+            stroke: this.options.borderColor,
+            fill: this.options.fillColor,
             strokeWidth: this.drawWidth
           });
           break;
@@ -435,8 +437,8 @@ export default {
           path += " L " + point5[0] + " " + point5[1]
           path += " Z";
           canvasObject = new fabric.Path(path, {
-            stroke: this.color,
-            fill: this.color,
+            stroke: this.options.borderColor,
+            fill: this.options.fillColor,
             strokeWidth: this.drawWidth,
             // angle:180,  //设置旋转角度
           });
@@ -454,8 +456,8 @@ export default {
           canvasObject = new fabric.Ellipse({
             left: (mouseTo.x - left) / 2 + left,
             top: (mouseTo.y - top) / 2 + top,
-            stroke: this.color,
-            fill: "rgba(255, 255, 255, 0)",
+            stroke: this.options.borderColor,
+            fill: this.options.fillColor,
             originX: "center",
             originY: "center",
             rx: Math.abs(left - mouseTo.x) / 2,
@@ -504,8 +506,8 @@ export default {
             left: Math.min(mouseFrom.x, mouseTo.x), 
             width: Math.abs(mouseFrom.x - mouseTo.x), 
             height: Math.abs(mouseFrom.y - mouseTo.y), 
-            fill: 'transparent', 
-            stroke: this.color
+            stroke: this.options.borderColor,
+            fill: this.options.fillColor,
           })
 
           //也可以使用fabric.Rect
@@ -516,8 +518,8 @@ export default {
             top: mouseFrom.y - 10,
             // width: 150,
             fontSize: 16,
-            borderColor: this.color,
-            fill: this.color,
+            borderColor: this.options.borderColor,
+            fill: this.options.fillColor,
             hasControls: false
           });
           this.canvas.add(this.textbox);

@@ -31,7 +31,7 @@ export default function(canvas){
         }
     });
 
-    hotkeys('backspace', function (event, handler){
+    hotkeys('backspace,delete', function (event, handler){
         const activeObject = canvas.getActiveObjects();
         if (activeObject) {
             activeObject.map(item => canvas.remove(item))

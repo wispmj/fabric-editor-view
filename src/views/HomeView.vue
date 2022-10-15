@@ -7,7 +7,7 @@
           &nbsp;
           <import-svg></import-svg>
           &nbsp;
-          <import-img></import-img>
+          <import-img  style="display:none"></import-img> 
           &nbsp;
           <!-- 对齐方式 -->
           <align></align>
@@ -20,12 +20,14 @@
           &nbsp;
           <zoom></zoom>
           &nbsp;
+          <preset></preset>
+          &nbsp;
           <lock></lock>
           &nbsp;
           <dele></dele>
           &nbsp;
           <clone></clone>
-
+          
           <div style="float:right">
               <save></save>
           </div>
@@ -89,6 +91,7 @@ import group from '@/components/group.vue'
 import zoom from '@/components/zoom.vue'
 import lock from '@/components/lock.vue'
 import dele from '@/components/del.vue'
+import preset from '@/components/preset.vue'
 
 // 左侧组件
 import importTmpl from '@/components/importTmpl.vue'
@@ -130,7 +133,7 @@ export default {
     };
   },
   components: {
-    setSize,tools,bgBar,lock,layer, align, attribute, dele,importSvg,save,importJSON,clone,flip,importImg, importTmpl, centerAlign, group, zoom,history
+    setSize,tools,bgBar,lock,layer, align, attribute, dele,importSvg,save,importJSON,clone,flip,importImg, importTmpl, centerAlign, group, zoom,history,preset
   },
   created(){
      this.$Spin.show();
