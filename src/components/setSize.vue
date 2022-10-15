@@ -34,16 +34,17 @@
 
 <script>
 
-const presetConfigSize = [{
+const presetConfigSize = [
+  {
+  label: '红书横版',
+  width: 830,
+  height: 545,
+  scale: 1,
+},
+{
   label: '红书竖版',
   width: 900,
   height: 1200,
-  scale: 0.5,
-},
-{
-  label: '红书横版',
-  width: 1200,
-  height: 900,
   scale: 0.5,
 },
 {
@@ -58,8 +59,8 @@ export default {
   inject: ['canvas', 'fabric'],
   data() {
     return {
-      width: 900 * 0.5,
-      height: 1200 * 0.5,
+      width: 830,
+      height: 545,
       presetSize: [...presetConfigSize]
     };
   },

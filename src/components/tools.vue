@@ -43,7 +43,7 @@
         </svg>
       </span>
     </div>
-    <Divider plain orientation="left">快捷导航</Divider>
+    <!-- <Divider plain orientation="left">快捷导航</Divider>
     <div>
       <a href="https://color.uisdc.com/pick.html" target="_blank">配色</a>
       <Divider type="vertical" />
@@ -52,7 +52,7 @@
       <a href="https://unsplash.com/" target="_blank">图片</a>
       <Divider type="vertical" />
       <a href="https://www.pexels.com/zh-cn/search/%E8%83%8C%E6%99%AF/" target="_blank">背景</a>
-    </div>
+    </div> -->
   </div>
 </template>
 

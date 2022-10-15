@@ -33,7 +33,7 @@
         <Content style=" display: flex; height: calc(100vh - 64px);">
           <div v-if="show" style="width: 380px; height: 100%; background:#fff; display: flex">
               <Menu :active-name="menuActive" accordion @on-select="activeIndex => menuActive = activeIndex" width="80px">
-                <MenuItem :name="1" style="padding:10px"><Icon type="md-book" />模板</MenuItem>
+                <!-- <MenuItem :name="1" style="padding:10px"><Icon type="md-book" />模板</MenuItem> -->
                 <MenuItem :name="2" style="padding:10px"><Icon type="md-create" />元素</MenuItem>
                 <MenuItem :name="3" style="padding:10px"><Icon type="ios-build" />背景</MenuItem>
               </Menu>
@@ -45,7 +45,7 @@
                   <!-- 常用元素 -->
                   <div v-show="menuActive === 2" class="left-panel">
                     <tools :canvasObj="canvas"></tools>
-                    <svgEl></svgEl>
+                    <!-- <svgEl></svgEl> -->
                   </div>
                   <!-- 背景设置 -->
                   <div v-show="menuActive === 3" class="left-panel">
@@ -123,14 +123,14 @@ export default {
   },
   data() {
     return {
-      menuActive: 1,
+      menuActive: 2,
       show: false,
       select: null,
       isLock: false,
     };
   },
   components: {
-    setSize,tools,bgBar,lock,layer, align, attribute, dele,importSvg,save,importJSON,clone,flip,importImg, importTmpl, centerAlign, group, zoom,svgEl,history
+    setSize,tools,bgBar,lock,layer, align, attribute, dele,importSvg,save,importJSON,clone,flip,importImg, importTmpl, centerAlign, group, zoom,history
   },
   created(){
      this.$Spin.show();
