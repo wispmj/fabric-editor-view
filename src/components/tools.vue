@@ -50,6 +50,14 @@
             p-id="18500"></path>
         </svg>
       </span>
+      <span @click="drawTypeChange('clippath')">
+        <svg t="1650855811131" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+          p-id="18499" width="26" height="26">
+          <path
+            d="M864 896H160a32 32 0 0 1-32-32V160a32 32 0 0 1 32-32h704a32 32 0 0 1 32 32v704a32 32 0 0 1-32 32zM192 832h640V192H192v640z"
+            p-id="18500"></path>
+        </svg>
+      </span>
     </div>
     <!-- <Divider plain orientation="left">快捷导航</Divider>
     <div>
@@ -545,6 +553,30 @@ export default {
             ]
           })
           canvasObject.set('fill', grident);
+          break;
+        case 'clippath':
+          // 裁剪的图形
+          // clipPath从对象的中心开始定位，对象originX和originY不起任何作用，而clipPath originX和originY起作用。定位逻辑与fabric.Group相同
+          const clipPath = new fabric.Circle({
+            radius: 40,
+            left: -40,
+            top: -40
+          })
+
+          canvasObject = new fabric.Group([
+            new fabric.Rect({ width: 100, height: 100, fill: 'red' }),
+            new fabric.Rect({ width: 100, height: 100, fill: 'yellow', left: 100 }),
+            new fabric.Rect({ width: 100, height: 100, fill: 'blue', top: 100 }),
+            new fabric.Rect({
+              width: 100,
+              height: 100,
+              fill: 'green',
+              left: 100,
+              top: 100
+            })
+          ])
+          // 裁剪一个组
+          canvasObject.clipPath = clipPath
           break;
         case 'triangle':
           canvasObject = new this.fabric.Triangle({
