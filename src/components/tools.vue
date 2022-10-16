@@ -123,8 +123,10 @@ export default {
         if (this.drawType === "polygon") {
           this.generatePolygon();
         }
-        if (this.drawType === "") {
-
+        if (this.textbox) {
+        this.textbox.hiddenTextarea.blur();
+          // this.textbox.exitEditingOnOthers();
+          
         }
         e.e.preventDefault();
         this.drawTypeChange("");
@@ -531,12 +533,12 @@ export default {
             // width: 150,
             fontSize: 16,
             borderColor: this.options.borderColor,
-            fill: this.options.fillColor,
-            hasControls: false
+            fill: this.options.borderColor,
           });
           this.canvas.add(this.textbox);
           this.textbox.enterEditing();
           this.textbox.hiddenTextarea.focus();
+          canvasObject = null;
           break;
 
         default:

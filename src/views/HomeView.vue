@@ -164,7 +164,7 @@ export default {
     // 选中后的删除图标
     this.setRemoveIcon()
     this.setControlsStyle(fabric)
-   // this.renderGrid(10, 15, "red");
+    // this.renderGrid(10, 15, "red");
     //this.drawGrid();
   },
   methods: {
