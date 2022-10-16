@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <Layout>
-      <Header v-if="show">
+      <Header v-show="show">
         <!-- 导入 -->
         <import-JSON></import-JSON>
         &nbsp;
@@ -63,6 +63,7 @@
         <div style="width: 100%;position: relative; background:#F1F1F1;">
           <div class="canvas-box">
             <canvas id="canvas"></canvas>
+            <!-- <canvas id="mycanvas"></canvas> -->
             <ContextMenu ref="contextMenu" :canvasObj="canvas"></ContextMenu>
           </div>
         </div>
@@ -120,6 +121,7 @@ import ContextMenu from '@/components/ContextMenu.vue'
 
 import { fabric } from 'fabric';
 import { refs } from 'vue'
+import $ from 'jquery'
 
 const event = new EventHandle()
 const canvas = {}
@@ -150,7 +152,7 @@ export default {
       fireMiddleClick: true
     });
     initAligningGuidelines(this.canvas)
-    //initCenteringGuidelines(this.canvas)
+    initCenteringGuidelines(this.canvas)
 
     this.canvas.set('backgroundColor', '#fff')
     this.show = true
@@ -162,6 +164,8 @@ export default {
     // 选中后的删除图标
     this.setRemoveIcon()
     this.setControlsStyle(fabric)
+   // this.renderGrid(10, 15, "red");
+    //this.drawGrid();
   },
   methods: {
     setRemoveIcon() {
@@ -204,6 +208,32 @@ export default {
     },
     rigthCilck(e) {
       this.$refs.contextMenu.canvasOnMouseDown(e);
+    },
+
+
+    renderGrid(x_size, y_size, color) {
+      var mycanvas = $("#mycanvas").get(0);
+      var context = mycanvas.getContext("2d");
+      context.save();
+      context.lineWidth = 0.5;
+      context.strokeStyle = color;
+      // horizontal grid lines
+      for (var i = 0; i <= canvas.height; i = i + x_size) {
+        context.beginPath();
+        context.moveTo(0, i);
+        context.lineTo(canvas.width, i);
+        context.closePath();
+        context.stroke();
+      }
+      // vertical grid lines
+      for (var j = 0; j <= canvas.width; j = j + y_size) {
+        context.beginPath();
+        context.moveTo(j, 0);
+        context.lineTo(j, canvas.height);
+        context.closePath();
+        context.stroke();
+      }
+      context.restore();
     }
   }
 };
