@@ -42,6 +42,14 @@
             p-id="2033"></path>
         </svg>
       </span>
+      <span @click="drawTypeChange('gridentRectangle')">
+        <svg t="1650855811131" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+          p-id="18499" width="26" height="26">
+          <path
+            d="M864 896H160a32 32 0 0 1-32-32V160a32 32 0 0 1 32-32h704a32 32 0 0 1 32 32v704a32 32 0 0 1-32 32zM192 832h640V192H192v640z"
+            p-id="18500"></path>
+        </svg>
+      </span>
     </div>
     <!-- <Divider plain orientation="left">快捷导航</Divider>
     <div>
@@ -124,9 +132,9 @@ export default {
           this.generatePolygon();
         }
         if (this.textbox) {
-        this.textbox.hiddenTextarea.blur();
+          this.textbox.hiddenTextarea.blur();
           // this.textbox.exitEditingOnOthers();
-          
+
         }
         e.e.preventDefault();
         this.drawTypeChange("");
@@ -516,6 +524,28 @@ export default {
             fill: this.options.fillColor,
           })
           break;
+        case 'gridentRectangle':
+          canvasObject = new fabric.Rect({
+            top: Math.min(mouseFrom.y, mouseTo.y),
+            left: Math.min(mouseFrom.x, mouseTo.x),
+            width: Math.abs(mouseFrom.x - mouseTo.x),
+            height: Math.abs(mouseFrom.y - mouseTo.y),
+            stroke: this.options.borderColor,
+            fill: this.options.fillColor,
+          })
+
+          var grident = new fabric.Gradient({
+            type: 'linear', // linear or radial
+            gradientUnits: 'pixels', // pixels or pencentage 像素 或者 百分比
+            coords: { x1: 0, y1: 0, x2: canvasObject.width, y2: 0 },
+            colorStops: [ // 定义渐变颜色的数组
+              { offset: 0, color: 'gray' },
+              { offset: 0.5, color: 'white' },
+              { offset: 1, color: 'gray' },
+            ]
+          })
+          canvasObject.set('fill', grident);
+          break;
         case 'triangle':
           canvasObject = new this.fabric.Triangle({
             top: Math.min(mouseFrom.y, mouseTo.y),
@@ -525,6 +555,17 @@ export default {
             stroke: this.options.borderColor,
             fill: this.options.fillColor,
           })
+          var grident = new fabric.Gradient({
+            type: 'linear', // linear or radial
+            gradientUnits: 'pixels', // pixels or pencentage 像素 或者 百分比
+            coords: { x1: 0, y1: 0, x2: canvasObject.width, y2: 0 },
+            colorStops: [ // 定义渐变颜色的数组
+              { offset: 0, color: 'gray' },
+              { offset: 0.5, color: 'white' },
+              { offset: 1, color: 'gray' },
+            ]
+          })
+          canvasObject.set('fill', grident);
           break;
         case "text": //文本框
           this.textbox = new fabric.Textbox("", {
