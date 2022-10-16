@@ -5,99 +5,53 @@
       <Divider plain orientation="left">字体</Divider>
       <Form label-position="left" :label-width="40">
         <FormItem label="大小">
-          <InputNumber
-            v-model="fontAttr.fontSize"
-            @on-change="(value) => changeCommon('fontSize', value)"
-            show-input
-            size="small"
-          ></InputNumber>
+          <InputNumber v-model="fontAttr.fontSize" @on-change="(value) => changeCommon('fontSize', value)" show-input
+            size="small"></InputNumber>
         </FormItem>
         <FormItem label="字体">
-          <Select
-            v-model="fontAttr.fontFamily"
-            @on-change="changeFontFamily"
-            size="small"
-          >
-            <Option
-              v-for="item in fontFamilyList"
-              :value="item"
-              :key="'font-' + item"
-              >{{ item }}</Option
-            >
+          <Select v-model="fontAttr.fontFamily" @on-change="changeFontFamily" size="small">
+            <Option v-for="item in fontFamilyList" :value="item" :key="'font-' + item">{{ item }}</Option>
           </Select>
         </FormItem>
         <FormItem label="背景">
-          <ColorPicker
-            v-model="fontAttr.textBackgroundColor"
-            @on-change="(value) => changeCommon('textBackgroundColor', value)"
-            alpha
-            transfer
-            size="small"
-          />
+          <ColorPicker v-model="fontAttr.textBackgroundColor"
+            @on-change="(value) => changeCommon('textBackgroundColor', value)" alpha transfer size="small" />
         </FormItem>
         <FormItem label="对齐">
-          <RadioGroup
-            v-model="fontAttr.textAlign"
-            @on-change="(value) => changeCommon('textAlign', value)"
-            size="small"
-            type="button"
-          >
+          <RadioGroup v-model="fontAttr.textAlign" @on-change="(value) => changeCommon('textAlign', value)" size="small"
+            type="button">
             <Radio v-for="(item, i) in textAlignList" :label="item" :key="item">
               <span v-html="textAlignListSvg[i]"></span>
             </Radio>
           </RadioGroup>
         </FormItem>
         <div style="padding: 5px 0">
-          加粗：<i-switch
-            v-model="fontAttr.fontWeight"
-            true-value="bold"
-            false-value="normal"
-            size="small"
-            @on-change="(value) => changeCommon('fontWeight', value)"
-          />
-          斜体：<i-switch
-            v-model="fontAttr.fontStyle"
-            true-value="italic"
-            false-value="normal"
-            size="small"
-            @on-change="(value) => changeCommon('fontStyle', value)"
-          />
+          加粗：
+          <i-switch v-model="fontAttr.fontWeight" true-value="bold" false-value="normal" size="small"
+            @on-change="(value) => changeCommon('fontWeight', value)" />
+          斜体：
+          <i-switch v-model="fontAttr.fontStyle" true-value="italic" false-value="normal" size="small"
+            @on-change="(value) => changeCommon('fontStyle', value)" />
           <br />
-          下划：<i-switch
-            v-model="fontAttr.underline"
-            size="small"
-            @on-change="(value) => changeCommon('underline', value)"
-          />
-          中划：<i-switch
-            v-model="fontAttr.linethrough"
-            size="small"
-            @on-change="(value) => changeCommon('linethrough', value)"
-          />
+          下划：
+          <i-switch v-model="fontAttr.underline" size="small"
+            @on-change="(value) => changeCommon('underline', value)" />
+          中划：
+          <i-switch v-model="fontAttr.linethrough" size="small"
+            @on-change="(value) => changeCommon('linethrough', value)" />
           <br />
-          上划：<i-switch
-            v-model="fontAttr.overline"
-            size="small"
-            @on-change="(value) => changeCommon('overline', value)"
-          />
+          上划：
+          <i-switch v-model="fontAttr.overline" size="small" @on-change="(value) => changeCommon('overline', value)" />
         </div>
 
         <FormItem label="行高">
-          <InputNumber
-            v-model="fontAttr.lineHeight"
-            @on-change="(value) => changeCommon('lineHeight', value)"
-            show-input
-            size="small"
-            :step="0.1"
-          ></InputNumber>
+          <InputNumber v-model="fontAttr.lineHeight" @on-change="(value) => changeCommon('lineHeight', value)"
+            show-input size="small" :step="0.1"></InputNumber>
         </FormItem>
 
         <FormItem label="间距">
-          <InputNumber
-            v-model="fontAttr.charSpacing"
-            @on-change="(value) => changeCommon('charSpacing', value)"
-            show-input
-            size="small"
-          ></InputNumber>
+          <InputNumber v-model="fontAttr.charSpacing" @on-change="(value) => changeCommon('charSpacing', value)"
+            show-input size="small"></InputNumber>
         </FormItem>
       </Form>
     </div>
@@ -105,106 +59,60 @@
     <div v-show="baseType.includes(mSelectOneType)">
       <Divider plain orientation="left">外观</Divider>
       <Form label-position="left" :label-width="40">
+        <FormItem label="测点">
+          <Input v-model="customizeAttr.tagName" @on-change="(tag) => changeCommon('tagName', tag.target.value)" show-input
+            size="small"></Input>
+        </FormItem>
         <FormItem label="颜色">
-          <ColorPicker
-            v-model="baseAttr.fill"
-            @on-change="(value) => changeCommon('fill', value)"
-            alpha
-            transfer
-            size="small"
-          />
+          <ColorPicker v-model="baseAttr.fill" @on-change="(value) => changeCommon('fill', value)" alpha transfer
+            size="small" />
         </FormItem>
         <FormItem label="旋转">
-          <InputNumber
-            v-model="baseAttr.angle"
-            :max="360"
-            @on-change="(value) => changeCommon('angle', value)"
-            show-input
-            size="small"
-          ></InputNumber>
+          <InputNumber v-model="baseAttr.angle" :max="360" @on-change="(value) => changeCommon('angle', value)"
+            show-input size="small"></InputNumber>
         </FormItem>
         <FormItem label="X轴">
-          <InputNumber
-            v-model="baseAttr.left"
-            :max="360"
-            @on-change="(value) => changeCommon('left', value)"
-            show-input
-            size="small"
-          ></InputNumber>
+          <InputNumber v-model="baseAttr.left" :max="360" @on-change="(value) => changeCommon('left', value)" show-input
+            size="small"></InputNumber>
         </FormItem>
         <FormItem label="Y轴">
-          <InputNumber
-            v-model="baseAttr.top"
-            :max="360"
-            @on-change="(value) => changeCommon('top', value)"
-            show-input
-            size="small"
-          ></InputNumber>
+          <InputNumber v-model="baseAttr.top" :max="360" @on-change="(value) => changeCommon('top', value)" show-input
+            size="small"></InputNumber>
         </FormItem>
         <FormItem label="透明">
-          <Slider
-            v-model="baseAttr.opacity"
-            @on-change="(value) => changeCommon('opacity', value)"
-            size="small"
-          ></Slider>
+          <Slider v-model="baseAttr.opacity" @on-change="(value) => changeCommon('opacity', value)" size="small">
+          </Slider>
         </FormItem>
       </Form>
       <Divider plain orientation="left">描边</Divider>
       <Form label-position="left" :label-width="40">
         <FormItem label="宽度">
-          <InputNumber
-            v-model="baseAttr.strokeWidth"
-            :max="360"
-            @on-change="(value) => changeCommon('strokeWidth', value)"
-            show-input
-            size="small"
-          ></InputNumber>
+          <InputNumber v-model="baseAttr.strokeWidth" :max="360"
+            @on-change="(value) => changeCommon('strokeWidth', value)" show-input size="small"></InputNumber>
         </FormItem>
         <FormItem label="颜色">
-          <ColorPicker
-            v-model="baseAttr.stroke"
-            @on-change="(value) => changeCommon('stroke', value)"
-            alpha
-            transfer
-            size="small"
-          />
+          <ColorPicker v-model="baseAttr.stroke" @on-change="(value) => changeCommon('stroke', value)" alpha transfer
+            size="small" />
         </FormItem>
       </Form>
 
       <Divider plain orientation="left">阴影</Divider>
       <Form label-position="left" :label-width="40">
         <FormItem label="颜色">
-          <ColorPicker
-            size="small"
-            v-model="baseAttr.shadow.color"
-            @on-change="(value) => changeShadow('color', value)"
-            alpha
-            transfer
-          />
+          <ColorPicker size="small" v-model="baseAttr.shadow.color" @on-change="(value) => changeShadow('color', value)"
+            alpha transfer />
         </FormItem>
         <FormItem label="模糊">
-          <InputNumber
-            v-model="baseAttr.shadow.blur"
-            :max="360"
-            @on-change="(value) => changeShadow('blur', value)"
-            size="small"
-          ></InputNumber>
+          <InputNumber v-model="baseAttr.shadow.blur" :max="360" @on-change="(value) => changeShadow('blur', value)"
+            size="small"></InputNumber>
         </FormItem>
         <FormItem label="X轴">
-          <InputNumber
-            v-model="baseAttr.shadow.offsetX"
-            :max="360"
-            @on-change="(value) => changeShadow('offsetX', value)"
-            size="small"
-          ></InputNumber>
+          <InputNumber v-model="baseAttr.shadow.offsetX" :max="360"
+            @on-change="(value) => changeShadow('offsetX', value)" size="small"></InputNumber>
         </FormItem>
         <FormItem label="Y轴">
-          <InputNumber
-            v-model="baseAttr.shadow.offsetY"
-            :max="360"
-            @on-change="(value) => changeShadow('offsetY', value)"
-            size="small"
-          ></InputNumber>
+          <InputNumber v-model="baseAttr.shadow.offsetY" :max="360"
+            @on-change="(value) => changeShadow('offsetY', value)" size="small"></InputNumber>
         </FormItem>
       </Form>
     </div>
@@ -212,15 +120,8 @@
     <!-- 图片属性 -->
     <div v-show="imgType.includes(mSelectOneType)">
       <Divider plain orientation="left">图片滤镜</Divider>
-      模糊：<Slider
-        v-model="imgAttr.blur"
-        :max="1"
-        :min="0"
-        :step="0.1"
-        @on-change="imgBlur"
-        show-input
-        size="small"
-      ></Slider>
+      模糊：<Slider v-model="imgAttr.blur" :max="1" :min="0" :step="0.1" @on-change="imgBlur" show-input size="small">
+      </Slider>
     </div>
   </div>
 </template>
@@ -235,7 +136,7 @@ export default {
   data() {
     return {
       // 通用元素
-      baseType: ['text', 'i-text', 'textbox', 'rect', 'circle', 'triangle', 'image', 'group','polygon'],
+      baseType: ['text', 'i-text', 'textbox', 'rect', 'circle', 'triangle', 'image', 'group', 'polygon'],
       // 文字元素
       textType: ['i-text', 'textbox', 'text'],
       // 图片元素
@@ -255,6 +156,9 @@ export default {
           offsetX: 0,
           offsetY: 0,
         }
+      },
+      customizeAttr: {
+        tagName: ''
       },
       // 字体属性
       fontAttr: {
@@ -331,7 +235,7 @@ export default {
     },
     // 修改字体
     changeFontFamily(fontName) {
-      if(!fontName) return
+      if (!fontName) return
 
       // 跳过加载的属性
       const skipFonts = ['arial', 'Microsoft YaHei']
@@ -379,9 +283,11 @@ export default {
 /deep/ .ivu-form-item {
   margin-bottom: 0;
 }
+
 /deep/ .ivu-color-picker {
   display: block;
 }
+
 /deep/ .ivu-input-number {
   display: block;
   width: 100%;

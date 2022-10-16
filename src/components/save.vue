@@ -36,7 +36,7 @@ export default {
       this[type]()
     },
     saveJson() {
-      const dataUrl = this.canvas.c.toJSON(['id'])
+      const dataUrl = this.canvas.c.toJSON(['id','tagName'])
       const fileStr = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(dataUrl, null, '\t'))}`;
       this.downFile(fileStr,'json')
     },

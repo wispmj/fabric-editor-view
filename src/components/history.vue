@@ -40,7 +40,7 @@ export default {
   methods:{
     // 保存记录
     save() {
-      const data = this.canvas.c.toJSON(['id'])
+      const data = this.canvas.c.toJSON(['id','tagName'])
       if(this.list.length > maxStep){
         this.list.shift()
       }
