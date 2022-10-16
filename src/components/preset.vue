@@ -6,8 +6,8 @@
 
 <template>
   <ButtonGroup size="small">
-    <ColorPicker v-model="options.borderColor" @on-change="setThisColor" size="small" transfer />
-    <ColorPicker v-model="options.fillColor" @on-change="setThisColor" size="small" transfer />
+    <ColorPicker v-model="options.borderColor" @on-change="setBorderColor" size="small" transfer />
+    <ColorPicker v-model="options.fillColor" @on-change="setFillColor" size="small" transfer />
   </ButtonGroup>
 </template>
 

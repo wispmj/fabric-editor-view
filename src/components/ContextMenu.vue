@@ -1,0 +1,129 @@
+<!-- 右键菜单 -->
+<template>
+  <div class="context__x">
+    <div id="menu" class="menu-x" v-show="menuVisable" :style="menuPosition" @contextmenu.prevent="" ref="menu">
+      <div>什么都不做</div>
+      <div>什么都不做</div>
+      <div>什么都不做</div>
+      <div>什么都不做</div>
+      <div @click="delEl">删除</div>
+    </div>
+  </div>
+</template>
+  
+<script>
+import { onMounted, ref, nextTick } from 'vue'
+// import { useStore } from 'vuex'
+import { fabric } from 'fabric'
+import select from '@/mixins/select'
+
+// const store = useStore()
+
+const menu = ref(null) // 画布元素
+export default {
+  name: 'ContextMenu',
+  mixins: [select],
+  inject: ['canvas'],
+  props: ['canvasObj'],
+  data() {
+    return {
+      menu: null,
+      menuVisable: false,
+      menuPosition: '',
+      activeEl: null
+    };
+  },
+  mounted() {
+    this.canvas = this.canvasObj;
+  },
+  methods: {
+    async canvasOnMouseDown(opt) {
+        // 右键，且在元素上右键
+        // button: 1-左键；2-中键；3-右键
+        // 在画布上右键，target 为 null
+        if (opt.button === 3 && opt.target) {
+          // 获取当前元素
+          this.activeEl = opt.target
+
+          // 显示菜单
+          this.menuVisable = true
+
+          await nextTick()
+          // 设置右键菜单位置
+          // 1. 获取菜单组件的宽高
+          const menuWidth = this.$refs.menu.offsetWidth
+          const menuHeight = this.$refs.menu.offsetHeight
+
+          // 当前鼠标位置
+          let pointX = opt.pointer.x
+          let pointY = opt.pointer.y
+
+          if (canvas.width - pointX <= menuWidth) {
+            pointX -= menuWidth
+          }
+          if (canvas.height - pointY <= menuHeight) {
+            pointY -= menuHeight
+          }
+
+          this.menuPosition = `
+        left: ${pointX}px;
+        top: ${pointY}px;
+      `
+        } else {
+          this.hiddenMenu()
+        }
+    },
+
+    hiddenMenu() {
+      this.menuVisable = false
+      this.activeEl = null
+    },
+
+    delEl() {
+      const activeObject = this.canvasObj.getActiveObjects();
+      activeObject && activeObject.map(item => this.canvasObj.remove(item))
+      this.canvasObj.requestRenderAll()
+      this.hiddenMenu()
+    }
+  },
+}
+
+
+// 按下鼠标
+</script>
+  
+<style>
+.context__x {
+  /* position: relative; */
+}
+
+.menu-x {
+  width: 200px;
+  position: absolute;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
+.menu-x>div {
+  box-sizing: border-box;
+  padding: 4px 8px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.menu-x>div:hover {
+  background-color: antiquewhite;
+}
+
+.menu-x>div:first-child {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.menu-x>div:last-child {
+  border-bottom: none;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+</style>

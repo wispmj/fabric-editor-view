@@ -117,10 +117,14 @@ export default {
   methods: {
     // 鼠标点击直线
     mousedown(e) {
+      this.$emit('rigthCilck',e);
       // 如果是右键，结束当前绘制
       if (e.button === 3) {
         if (this.drawType === "polygon") {
           this.generatePolygon();
+        }
+        if (this.drawType === "") {
+
         }
         e.e.preventDefault();
         this.drawTypeChange("");
@@ -501,11 +505,11 @@ export default {
           //   hasControls: false
           // });
 
-          canvasObject = new fabric.Rect({ 
-            top: Math.min(mouseFrom.y, mouseTo.y), 
-            left: Math.min(mouseFrom.x, mouseTo.x), 
-            width: Math.abs(mouseFrom.x - mouseTo.x), 
-            height: Math.abs(mouseFrom.y - mouseTo.y), 
+          canvasObject = new fabric.Rect({
+            top: Math.min(mouseFrom.y, mouseTo.y),
+            left: Math.min(mouseFrom.x, mouseTo.x),
+            width: Math.abs(mouseFrom.x - mouseTo.x),
+            height: Math.abs(mouseFrom.y - mouseTo.y),
             stroke: this.options.borderColor,
             fill: this.options.fillColor,
           })
