@@ -126,6 +126,8 @@ export default {
     this.canvas.on("mouse:down", this.mousedown);
     this.canvas.on("mouse:move", this.mousemove);
     this.canvas.on("mouse:up", this.mouseup);
+    this.canvas.on("mouse:over", this.mouseover);
+
     $(document).contextmenu(function (e) {
       e.preventDefault();
     })
@@ -228,6 +230,16 @@ export default {
       }
     },
 
+    //鼠标移动过程中已经完成了绘制
+    mouseover(e) {
+      // if (e.target) {
+      //   e.target.set('stroke', 'red')
+      //   this.canvas.renderAll()
+      // } else {
+      //   e.target.set('stroke', 'black')
+      //   this.canvas.renderAll()
+      // }
+    },
     // 开始绘制时，指定绘画种类
     drawTypeChange(e) {
       this.drawType = e;
@@ -620,9 +632,36 @@ export default {
 
       if (canvasObject) {
         // canvasObject.index = getCanvasObjectIndex();\
-        this.canvas.add(canvasObject); //.setActiveObject(canvasObject)
+        this.canvas.add(canvasObject);
+        this.canvas.setActiveObject(canvasObject)
         this.drawingObject = canvasObject;
       }
+    },
+
+    Edit() {
+      var poly = this.canvas.getObjects()[0];
+      this.canvas.setActiveObject(poly);
+      poly.edit = !poly.edit;
+      if (poly.edit) {
+        var lastControl = poly.points.length - 1;
+        poly.cornerStyle = 'circle';
+        poly.cornerColor = 'rgba(0,0,255,0.5)';
+        poly.controls = poly.points.reduce(function (acc, point, index) {
+          acc['p' + index] = new fabric.Control({
+            positionHandler: polygonPositionHandler,
+            actionHandler: anchorWrapper(index > 0 ? index - 1 : lastControl, actionHandler),
+            actionName: 'modifyPolygon',
+            pointIndex: index
+          });
+          return acc;
+        }, {});
+      } else {
+        poly.cornerColor = 'blue';
+        poly.cornerStyle = 'rect';
+        poly.controls = fabric.Object.prototype.controls;
+      }
+      poly.hasBorders = !poly.edit;
+      canvas.requestRenderAll();
     },
     //---------------------------------------原代码--------------------------------
     addText() {
