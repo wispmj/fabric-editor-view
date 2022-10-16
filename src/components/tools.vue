@@ -34,7 +34,7 @@
             p-id="19441"></path>
         </svg>
       </span>
-      <span @click="addTriangle">
+      <span @click="drawTypeChange('triangle')">
         <svg t="1650874633978" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
           p-id="2032" width="26" height="26">
           <path
@@ -117,7 +117,7 @@ export default {
   methods: {
     // 鼠标点击直线
     mousedown(e) {
-      this.$emit('rigthCilck',e);
+      this.$emit('rigthCilck', e);
       // 如果是右键，结束当前绘制
       if (e.button === 3) {
         if (this.drawType === "polygon") {
@@ -513,8 +513,16 @@ export default {
             stroke: this.options.borderColor,
             fill: this.options.fillColor,
           })
-
-          //也可以使用fabric.Rect
+          break;
+        case 'triangle':
+          canvasObject = new this.fabric.Triangle({
+            top: Math.min(mouseFrom.y, mouseTo.y),
+            left: Math.min(mouseFrom.x, mouseTo.x),
+            width: Math.abs(mouseFrom.x - mouseTo.x),
+            height: Math.abs(mouseFrom.y - mouseTo.y),
+            stroke: this.options.borderColor,
+            fill: this.options.fillColor,
+          })
           break;
         case "text": //文本框
           this.textbox = new fabric.Textbox("", {
