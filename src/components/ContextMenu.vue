@@ -4,8 +4,8 @@
     <div id="menu" class="menu-x" v-show="menuVisable" :style="menuPosition" @contextmenu.prevent="" ref="menu">
       <div>什么都不做</div>
       <div>什么都不做</div>
-      <div>什么都不做</div>
-      <div>什么都不做</div>
+      <div @click="setBack">置底</div>
+      <div @click="setFront">置顶</div>
       <div @click="delEl">删除</div>
     </div>
   </div>
@@ -38,47 +38,60 @@ export default {
   },
   methods: {
     async canvasOnMouseDown(opt) {
-        // 右键，且在元素上右键
-        // button: 1-左键；2-中键；3-右键
-        // 在画布上右键，target 为 null
-        if (opt.button === 3 && opt.target) {
-          // 获取当前元素
-          this.activeEl = opt.target
+      // 右键，且在元素上右键
+      // button: 1-左键；2-中键；3-右键
+      // 在画布上右键，target 为 null
+      if (opt.button === 3 && opt.target) {
+        // 获取当前元素
+        this.activeEl = opt.target
 
-          // 显示菜单
-          this.menuVisable = true
+        // 显示菜单
+        this.menuVisable = true
 
-          await nextTick()
-          // 设置右键菜单位置
-          // 1. 获取菜单组件的宽高
-          const menuWidth = this.$refs.menu.offsetWidth
-          const menuHeight = this.$refs.menu.offsetHeight
+        await nextTick()
+        // 设置右键菜单位置
+        // 1. 获取菜单组件的宽高
+        const menuWidth = this.$refs.menu.offsetWidth
+        const menuHeight = this.$refs.menu.offsetHeight
 
-          // 当前鼠标位置
-          let pointX = opt.pointer.x
-          let pointY = opt.pointer.y
+        // 当前鼠标位置
+        let pointX = opt.pointer.x
+        let pointY = opt.pointer.y
 
-          if (canvas.width - pointX <= menuWidth) {
-            pointX -= menuWidth
-          }
-          if (canvas.height - pointY <= menuHeight) {
-            pointY -= menuHeight
-          }
+        if (canvas.width - pointX <= menuWidth) {
+          pointX -= menuWidth
+        }
+        if (canvas.height - pointY <= menuHeight) {
+          pointY -= menuHeight
+        }
 
-          this.menuPosition = `
+        this.menuPosition = `
         left: ${pointX}px;
         top: ${pointY}px;
       `
-        } else {
-          this.hiddenMenu()
-        }
+      } else {
+        this.hiddenMenu()
+      }
     },
 
     hiddenMenu() {
       this.menuVisable = false
       this.activeEl = null
     },
-
+    // 置底
+    setBack() {
+      this.canvasObj.getActiveObjects().forEach((ele) => {
+        this.canvasObj.sendToBack(ele)
+      })
+      this.hiddenMenu();
+    },
+    // 置顶
+    setFront() {
+      this.canvasObj.getActiveObjects().forEach((ele) => {
+        this.canvasObj.bringToFront(ele)
+      })
+      this.hiddenMenu();
+    },
     delEl() {
       const activeObject = this.canvasObj.getActiveObjects();
       activeObject && activeObject.map(item => this.canvasObj.remove(item))
