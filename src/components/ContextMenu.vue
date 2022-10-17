@@ -10,7 +10,7 @@
     </div>
   </div>
 </template>
-  
+
 <script>
 import { onMounted, ref, nextTick } from 'vue'
 // import { useStore } from 'vuex'
@@ -23,8 +23,6 @@ const menu = ref(null) // 画布元素
 export default {
   name: 'ContextMenu',
   mixins: [select],
-  inject: ['canvas'],
-  props: ['canvasObj'],
   data() {
     return {
       menu: null,
@@ -32,9 +30,6 @@ export default {
       menuPosition: '',
       activeEl: null
     };
-  },
-  mounted() {
-    this.canvas = this.canvasObj;
   },
   methods: {
     async canvasOnMouseDown(opt) {
@@ -80,22 +75,22 @@ export default {
     },
     // 置底
     setBack() {
-      this.canvasObj.getActiveObjects().forEach((ele) => {
-        this.canvasObj.sendToBack(ele)
+      this.canvas.c.getActiveObjects().forEach((ele) => {
+        this.canvas.c.sendToBack(ele)
       })
       this.hiddenMenu();
     },
     // 置顶
     setFront() {
-      this.canvasObj.getActiveObjects().forEach((ele) => {
-        this.canvasObj.bringToFront(ele)
+      this.canvas.c.getActiveObjects().forEach((ele) => {
+        this.canvas.c.bringToFront(ele)
       })
       this.hiddenMenu();
     },
     delEl() {
-      const activeObject = this.canvasObj.getActiveObjects();
-      activeObject && activeObject.map(item => this.canvasObj.remove(item))
-      this.canvasObj.requestRenderAll()
+      const activeObject = this.canvas.c.getActiveObjects();
+      activeObject && activeObject.map(item => this.canvas.c.remove(item))
+      this.canvas.c.requestRenderAll()
       this.hiddenMenu()
     }
   },
@@ -104,7 +99,7 @@ export default {
 
 // 按下鼠标
 </script>
-  
+
 <style>
 .context__x {
   /* position: relative; */

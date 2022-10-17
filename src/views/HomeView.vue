@@ -64,7 +64,7 @@
           <div class="canvas-box">
             <canvas id="canvas"></canvas>
             <!-- <canvas id="mycanvas"></canvas> -->
-            <ContextMenu ref="contextMenu" :canvasObj="canvas"></ContextMenu>
+            <ContextMenu ref="contextMenu"></ContextMenu>
           </div>
         </div>
         <!-- 属性区域 -->
