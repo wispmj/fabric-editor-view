@@ -90,16 +90,22 @@ export default {
     },
     drawGrid() {
       var imageCanvas = document.createElement("canvas");
+      imageCanvas.width = this.canvas.c.width;
+      imageCanvas.height = this.canvas.c.height;
+      var context = imageCanvas.getContext("2d");
+
       if (!this.options.grid) {
         this.drawGrid2Img('');
         return;
       }
-      imageCanvas.width = this.canvas.c.width;
-      imageCanvas.height = this.canvas.c.height;
-
+      if (this.canvas.c.backgroundImage != null && this.canvas.c.backgroundImage.getSrc() !== null) {
+        var bgImg = new Image();
+        bgImg.src = this.canvas.c.backgroundImage.getSrc();
+        context.drawImage(bgImg, 0, 0);
+      }
+      
       var currentCanvasWidth = this.canvas.c.width;
       var currentcanvasHeight = this.canvas.c.height;
-      var context = imageCanvas.getContext("2d");
       var gridSize = this.options.gridSize;
 
       // Drawing vertical lines
