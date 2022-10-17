@@ -101,9 +101,11 @@ export default {
       if (this.canvas.c.backgroundImage != null && this.canvas.c.backgroundImage.getSrc() !== null) {
         var bgImg = new Image();
         bgImg.src = this.canvas.c.backgroundImage.getSrc();
+        context.globalAlpha = 0.3
         context.drawImage(bgImg, 0, 0);
       }
       
+      context.globalAlpha = 1
       var currentCanvasWidth = this.canvas.c.width;
       var currentcanvasHeight = this.canvas.c.height;
       var gridSize = this.options.gridSize;
