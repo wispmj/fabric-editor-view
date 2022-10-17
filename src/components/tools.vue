@@ -138,15 +138,11 @@ export default {
       this.$emit('rigthCilck', e);
       // 如果是右键，结束当前绘制
       if (e.button === 3) {
+        e.e.preventDefault();
         if (this.drawType === "polygon") {
           this.generatePolygon();
         }
-        if (this.textbox) {
-          this.textbox.hiddenTextarea.blur();
-          // this.textbox.exitEditingOnOthers();
 
-        }
-        e.e.preventDefault();
         this.drawTypeChange("");
         return;
       }
@@ -171,7 +167,7 @@ export default {
           if (this.pointArray.length > 1) {
             // e.target.id == this.pointArray[0].id 表示点击了初始红点
             if (e.target && e.target.id == this.pointArray[0].id) {
-              this.generatePolygon();
+              this.generatePolygon(true);
             }
           }
           //未点击红点则继续作画
@@ -211,14 +207,15 @@ export default {
         this.drawing(e);
       }
       if (this.drawType == "polygon") {
+        var adsortPoint = this.getAdsortPoint(e.absolutePointer.x, e.absolutePointer.y);
         if (this.activeLine && this.activeLine.class == "line") {
-          var pointer = this.canvas.getPointer(e.e);
-          this.activeLine.set({ x2: pointer.x, y2: pointer.y });
+          // var pointer = this.canvas.getPointer(e.e);
+          this.activeLine.set({ x2: adsortPoint.x, y2: adsortPoint.y });
 
           var points = this.activeShape.get("points");
           points[this.pointArray.length] = {
-            x: pointer.x,
-            y: pointer.y,
+            x: adsortPoint.x,
+            y: adsortPoint.y,
             zIndex: 1
           };
           this.activeShape.set({
@@ -232,13 +229,6 @@ export default {
 
     //鼠标移动过程中已经完成了绘制
     mouseover(e) {
-      // if (e.target) {
-      //   e.target.set('stroke', 'red')
-      //   this.canvas.renderAll()
-      // } else {
-      //   e.target.set('stroke', 'black')
-      //   this.canvas.renderAll()
-      // }
     },
     // 开始绘制时，指定绘画种类
     drawTypeChange(e) {
@@ -270,6 +260,8 @@ export default {
       this.canvas.isDrawingMode = false;
     },
     addPoint(e) {
+      //var point = this.canvas.getPointer(e.e)
+      var adsortPoint = this.getAdsortPoint(e.absolutePointer.x, e.absolutePointer.y);
       var random = Math.floor(Math.random() * 10000);
       var id = new Date().getTime() + random;
       var circle = new fabric.Circle({
@@ -277,8 +269,8 @@ export default {
         fill: "#ffffff",
         stroke: "#333333",
         strokeWidth: 0.5,
-        left: (e.pointer.x || e.e.layerX) / this.canvas.getZoom(),
-        top: (e.pointer.y || e.e.layerY) / this.canvas.getZoom(),
+        left: (adsortPoint.x || e.e.layerX),
+        top: (adsortPoint.y || e.e.layerY),
         selectable: false,
         hasBorders: false,
         hasControls: false,
@@ -293,10 +285,10 @@ export default {
         });
       }
       var points = [
-        (e.pointer.x || e.e.layerX) / this.canvas.getZoom(),
-        (e.pointer.y || e.e.layerY) / this.canvas.getZoom(),
-        (e.pointer.x || e.e.layerX) / this.canvas.getZoom(),
-        (e.pointer.y || e.e.layerY) / this.canvas.getZoom()
+        (adsortPoint.x),
+        (adsortPoint.y),
+        (adsortPoint.x),
+        (adsortPoint.y)
       ];
 
       this.line = new fabric.Line(points, {
@@ -314,17 +306,17 @@ export default {
         objectCaching: false
       });
       if (this.activeShape) {
-        var pos = this.canvas.getPointer(e.e);
+        //var pos = this.canvas.getPointer(e.e);
         var points = this.activeShape.get("points");
         points.push({
-          x: pos.x,
-          y: pos.y
+          x: adsortPoint.x,
+          y: adsortPoint.y
         });
-        var polygon = new fabric.Polygon(points, {
+        var polygon = new fabric.Polyline(points, {
           stroke: "#333333",
           strokeWidth: 1,
-          fill: "#cccccc",
-          opacity: 0.3,
+          fill: "",
+          // opacity: 0.3,
 
           selectable: false,
           hasBorders: false,
@@ -339,11 +331,11 @@ export default {
       } else {
         var polyPoint = [
           {
-            x: (e.pointer.x || e.e.layerX) / this.canvas.getZoom(),
-            y: (e.pointer.y || e.e.layerY) / this.canvas.getZoom()
+            x: (adsortPoint.x),
+            y: (adsortPoint.y)
           }
         ];
-        var polygon = new fabric.Polygon(polyPoint, {
+        var polygon = new fabric.Polyline(polyPoint, {
           stroke: "#333333",
           strokeWidth: 1,
           fill: "#cccccc",
@@ -365,7 +357,7 @@ export default {
       this.canvas.add(this.line);
       this.canvas.add(circle);
     },
-    generatePolygon() {
+    generatePolygon(isClose) {
       var points = new Array();
       this.pointArray.map((point, index) => {
         points.push({
@@ -378,15 +370,28 @@ export default {
         this.canvas.remove(line);
       });
       this.canvas.remove(this.activeShape).remove(this.activeLine);
-      var polygon = new fabric.Polygon(points, {
-        stroke: this.options.borderColor,
-        strokeWidth: this.drawWidth,
-        fill: this.options.fillColor,
-        opacity: 1,
-        hasBorders: false,
-        hasControls: false,
-        perPixelTargetFind: true
-      });
+      var polygon = null;
+      if (isClose) {
+        polygon = new fabric.Polygon(points, {
+          stroke: this.options.borderColor,
+          strokeWidth: this.drawWidth,
+          fill: this.options.fillColor,
+          opacity: 1,
+          hasBorders: false,
+          hasControls: false,
+          perPixelTargetFind: true
+        });
+      } else {
+        polygon = new fabric.Polyline(points, {
+          stroke: this.options.borderColor,
+          strokeWidth: this.drawWidth,
+          fill: this.options.fillColor,
+          opacity: 1,
+          hasBorders: false,
+          hasControls: false,
+          perPixelTargetFind: true
+        });
+      }
       this.canvas.add(polygon);
 
       this.activeLine = null;
@@ -488,6 +493,7 @@ export default {
               (mouseTo.y - top) * (mouseTo.y - top)
             ) / 2;
           canvasObject = new fabric.Ellipse({
+            id: uuid(),
             left: (mouseTo.x - left) / 2 + left,
             top: (mouseTo.y - top) / 2 + top,
             stroke: this.options.borderColor,
@@ -526,15 +532,6 @@ export default {
             " " +
             mouseFrom.y +
             " z";
-          // canvasObject = new fabric.Path(path, {
-          //   left: left,
-          //   top: top,
-          //   stroke: this.color,
-          //   strokeWidth: this.drawWidth,
-          //   fill: "rgba(255, 255, 255, 0)",
-          //   hasControls: false
-          // });
-
           canvasObject = new fabric.Rect({
             top: Math.min(mouseFrom.y, mouseTo.y),
             left: Math.min(mouseFrom.x, mouseTo.x),
@@ -642,7 +639,6 @@ export default {
           this.textbox.hiddenTextarea.focus();
           canvasObject = null;
           break;
-
         default:
           break;
       }
@@ -680,15 +676,39 @@ export default {
       poly.hasBorders = !poly.edit;
       canvas.requestRenderAll();
     },
-    //---------------------------------------原代码--------------------------------
-    addText() {
-      const text = new this.fabric.IText('万事大吉', {
-        ...defaultPosition,
-        fontSize: 40, id: uuid(),
-      });
-      this.canvas.c.add(text)
-      this.canvas.c.setActiveObject(text);
+    // 寻找吸附点
+    getAdsortPoint(pointx, pointy) {
+      var x = Math.abs(pointx);
+      var y = Math.abs(pointy);
+      if (!this.options.adsorbPoint) {
+        return { x, y }
+      }
+      const gridSize = this.options.gridSize;//scale
+      const resizeX = x % gridSize;
+      const resizeY = y % gridSize;
+      if (resizeX !== 0) {
+        if (resizeX > gridSize / 2) {
+          x += gridSize - resizeX;
+        } else {
+          x -= resizeX;
+        }
+      }
+      if (resizeY !== 0) {
+        if (resizeY > gridSize / 2) {
+          y += gridSize - resizeY;
+        } else {
+          y -= resizeY;
+        }
+      }
+      if (pointx < 0) {
+        x = -x;
+      }
+      if (pointy < 0) {
+        y = -y;
+      }
+      return { x, y }
     },
+    //---------------------------------------原代码--------------------------------
     addImg(e) {
       const imgEl = e.target.cloneNode(true)
       const imgInstance = new fabric.Image(imgEl, {
@@ -698,49 +718,6 @@ export default {
       });
       this.canvas.c.add(imgInstance)
       this.canvas.c.renderAll()
-    },
-    addTextBox() {
-      const text = new this.fabric.Textbox('诸事顺遂', {
-        ...defaultPosition,
-        splitByGrapheme: true, width: 300,
-        fontSize: 40, id: uuid(),
-      });
-      this.canvas.add(text)
-      this.canvas.setActiveObject(text);
-    },
-    addTriangle() {
-      const triangle = new this.fabric.Triangle({
-        top: 100,
-        left: 100,
-        width: 100,
-        height: 100,
-        fill: '#92706B'
-      })
-      this.canvas.c.add(triangle)
-      this.canvas.c.setActiveObject(triangle);
-    },
-    addCircle() {
-      const circle = new this.fabric.Circle({
-        ...defaultPosition,
-        radius: 50,
-        fill: '#57606B',
-        id: uuid(),
-        name: '圆形'
-      });
-      this.canvas.add(circle)
-      //this.canvas.setActiveObject(circle);
-    },
-    addRect() {
-      const circle = new this.fabric.Rect({
-        ...defaultPosition,
-        fill: '#F57274',
-        width: 100,
-        height: 100,
-        id: uuid(),
-        name: '矩形'
-      });
-      this.canvas.c.add(circle)
-      this.canvas.c.setActiveObject(circle);
     },
   }
 };

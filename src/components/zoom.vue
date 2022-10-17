@@ -35,7 +35,7 @@ export default {
   methods:{
     rSet(){
       this.canvas.c.zoomToPoint(
-        new this.fabric.Point(this.canvas.c.getWidth() / 2, this.canvas.c.getHeight() / 2),
+        new this.fabric.Point(0, 0),
 			  1,
       )
       this.zoom = `${Math.round(100)}%`
@@ -44,7 +44,7 @@ export default {
       let zoomRatio = this.canvas.c.getZoom();
       zoomRatio += 0.05;
       this.canvas.c.zoomToPoint(
-        new this.fabric.Point(this.canvas.c.getWidth() / 2, this.canvas.c.getHeight() / 2),
+        new this.fabric.Point(0, 0),
 			  zoomRatio,
       )
       this.zoom = `${Math.round(zoomRatio * 100)}%`
