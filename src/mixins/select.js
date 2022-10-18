@@ -8,9 +8,10 @@ export default {
       mSelectOneType: '', // i-text | group ...
       mSelectId: '', // 选择id
       mSelectIds: [], // 选择id
+      _clipboardContent: ''
     }
   },
-  created(){
+  created() {
     this.event.on('selectOne', (e) => {
       this.mSelectMode = 'one'
       this.mSelectId = e[0].id
@@ -37,17 +38,17 @@ export default {
      * @param {Object} data 房间详情数据
      */
     _mixinSelected({ event, selected }) {
-      if(selected.length === 1) {
+      if (selected.length === 1) {
         const selectItem = selected[0]
         this.mSelectMode = 'one'
         this.mSelectOneType = selectItem.type
         this.mSelectId = [selectItem.id]
         this.mSelectActive = [selectItem]
-      }else if(selected.length > 1){
+      } else if (selected.length > 1) {
         this.mSelectMode = 'multiple'
         this.mSelectActive = selected
         this.mSelectId = selected.map(item => item.id)
-      }else{
+      } else {
         this._mixinCancel()
       }
     },
@@ -55,22 +56,55 @@ export default {
      * @description: 保存data数据
      * @param {Object} data 房间详情数据
      */
-     _mixinCancel(data) {
-      this.mSelectMode =''
-      this.mSelectId= []
-      this.mSelectActive =[]
+    _mixinCancel(data) {
+      this.mSelectMode = ''
+      this.mSelectId = []
+      this.mSelectActive = []
       this.mSelectOneType = ''
     },
     /**
      * @description: 复制到剪切板
      * @param {String} clipboardText 复制内容
      */
-     _mixinClipboard(clipboardText) {
+    _mixinClipboard(clipboardText) {
       this.$copyText(clipboardText).then(() => {
         this.$Message.success('复制成功')
       }, () => {
         this.$Message.error('复制失败')
       })
     },
+    copy() {//复制
+      this.canvas.c.getActiveObject().clone((cloned) => {//获取选中元素并存储到clone
+        this._clipboardContent = cloned;//复制存储
+      });
+    },
+    paste() {
+      // clone again, so you can do multiple copies.
+      let canvas = this.canvas.c;
+      this._clipboardContent.clone((clonedObj) => {
+        canvas.discardActiveObject();
+        clonedObj.set({
+          left: clonedObj.left + 20,
+          top: clonedObj.top + 20,
+          evented: true,
+        });
+        if (clonedObj.type === 'activeSelection') {
+          // active selection needs a reference to the canvas.
+          clonedObj.canvas = canvas;
+          clonedObj.forEachObject(function (obj) {
+            canvas.add(obj);
+          });
+          // this should solve the unselectability
+          clonedObj.setCoords();
+        } else {
+          canvas.add(clonedObj);
+        }
+        _clipboard.top += 20;
+        _clipboard.left += 20;
+        canvas.setActiveObject(clonedObj);
+        this._clipboardContent = '';
+        // canvas.requestRenderAll();
+      });
+    }
   }
 }
