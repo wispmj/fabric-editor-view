@@ -29,7 +29,7 @@ export default {
     },
     flip(type){
       const activeObject = this.canvas.c.getActiveObject();
-      activeObject.set('scale' + type, -1).setCoords()
+      activeObject.set('scale' + type, -1*activeObject['scale' + type]).setCoords()
       this.canvas.c.requestRenderAll()
     }
   }
