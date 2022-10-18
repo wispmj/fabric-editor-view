@@ -3,7 +3,7 @@
   <div class="context__x">
     <div id="menu" class="menu-x" v-show="menuVisable" :style="menuPosition" @contextmenu.prevent="" ref="menu">
       <div @click="setStraighten">摆正</div>
-      <div @click="setEdit">编辑线条</div>
+      <div @click="setEdit">编辑</div>
       <div @click="setBack">置底</div>
       <div @click="setFront">置顶</div>
       <div @click="delEl">删除</div>
@@ -72,6 +72,7 @@ export default {
       this.canvas.c.getActiveObjects().forEach((ele) => {
         // this.canvas.c.straightenObject(ele)
         this.canvas.c.fxStraightenObject(ele)
+        this.hiddenMenu();
       })
 
     },
