@@ -6,6 +6,8 @@
       <div @click="setEdit">编辑</div>
       <div @click="setBack">置底</div>
       <div @click="setFront">置顶</div>
+      <div @click="copyNode">复制</div>
+      <div @click="pasteNode">粘贴</div>
       <div @click="delEl">删除</div>
     </div>
   </div>
@@ -33,10 +35,15 @@ export default {
   },
   methods: {
     async canvasOnMouseDown(opt) {
+      if (this.canvas.c.isDrawingMode) {
+        this.menuVisable = false;
+        return;
+      }
+      this.menuVisable = true;
       // 右键，且在元素上右键
       // button: 1-左键；2-中键；3-右键
       // 在画布上右键，target 为 null
-      if (opt.button === 3 && opt.target) {
+      if (opt.button === 3) { //&& opt.target
         // 获取当前元素
         this.activeEl = opt.target
 
@@ -65,8 +72,16 @@ export default {
         top: ${pointY}px;
       `
       } else {
-        this.hiddenMenu()
+        this.hiddenMenu();
       }
+    },
+    copyNode() {
+      this.copy();
+      this.hiddenMenu();
+    },
+    pasteNode() {
+      this.paste();
+      this.hiddenMenu();
     },
     setStraighten: function () {
       this.canvas.c.getActiveObjects().forEach((ele) => {

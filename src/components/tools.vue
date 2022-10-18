@@ -144,6 +144,7 @@ export default {
         }
 
         this.drawTypeChange("");
+        this.canvas.isDrawingMode = false;
         return;
       }
       // 记录鼠标按下时的坐标
@@ -280,6 +281,7 @@ export default {
         objectCaching: false
       });
       if (this.pointArray.length == 0) {
+        this.canvas.isDrawingMode = true;
         circle.set({
           fill: "red"
         });
