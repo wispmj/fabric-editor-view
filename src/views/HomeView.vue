@@ -164,8 +164,6 @@ export default {
     // 选中后的删除图标
     this.setRemoveIcon()
     this.setControlsStyle(fabric)
-    // this.renderGrid(10, 15, "red");
-    //this.drawGrid();
   },
   methods: {
     setRemoveIcon() {
@@ -209,32 +207,6 @@ export default {
     rigthCilck(e) {
       this.$refs.contextMenu.canvasOnMouseDown(e);
     },
-
-
-    renderGrid(x_size, y_size, color) {
-      var mycanvas = $("#mycanvas").get(0);
-      var context = mycanvas.getContext("2d");
-      context.save();
-      context.lineWidth = 0.5;
-      context.strokeStyle = color;
-      // horizontal grid lines
-      for (var i = 0; i <= canvas.height; i = i + x_size) {
-        context.beginPath();
-        context.moveTo(0, i);
-        context.lineTo(canvas.width, i);
-        context.closePath();
-        context.stroke();
-      }
-      // vertical grid lines
-      for (var j = 0; j <= canvas.width; j = j + y_size) {
-        context.beginPath();
-        context.moveTo(j, 0);
-        context.lineTo(j, canvas.height);
-        context.closePath();
-        context.stroke();
-      }
-      context.restore();
-    }
   }
 };
 </script>
