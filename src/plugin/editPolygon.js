@@ -64,7 +64,7 @@ function Edit(canvas) {
     // may want copy and paste on different moment.
     // and you do not want the changes happened
     // later to reflect on the copy.
-    var poly = canvas.getObjects()[0];
+    var poly = canvas.getActiveObjects()[0];
     canvas.setActiveObject(poly);
     poly.edit = !poly.edit;
     if (poly.edit) {
