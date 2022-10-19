@@ -34,6 +34,14 @@
             p-id="19441"></path>
         </svg>
       </span>
+      <span @click="drawTypeChange('semicircle')">
+        <svg t="1650855860236" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+          p-id="19440" width="26" height="26">
+          <path
+            d="M512 928C282.624 928 96 741.376 96 512S282.624 96 512 96s416 186.624 416 416-186.624 416-416 416z m0-768C317.92 160 160 317.92 160 512s157.92 352 352 352 352-157.92 352-352S706.08 160 512 160z"
+            p-id="19441"></path>
+        </svg>
+      </span>
       <span @click="drawTypeChange('triangle')">
         <svg t="1650874633978" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
           p-id="2032" width="26" height="26">
@@ -76,6 +84,7 @@
 import { v4 as uuid } from 'uuid';
 import options from '../plugin/options'
 import $ from 'jquery'
+import semicircle from '@/custom/semicircle'
 
 const defaultPosition = {
   left: 100, top: 100, shadow: '', fontFamily: 'arial'
@@ -118,6 +127,7 @@ export default {
       delectKlass: {},
       imgFile: {},
       imgSrc: "",
+      semicircle: {}
     };
   },
   mounted() {
@@ -130,7 +140,9 @@ export default {
 
     $(document).contextmenu(function (e) {
       e.preventDefault();
-    })
+    });
+    this.semicircle = semicircle();
+
   },
   methods: {
     // 鼠标点击直线
@@ -645,6 +657,19 @@ export default {
           this.textbox.enterEditing();
           this.textbox.hiddenTextarea.focus();
           canvasObject = null;
+          break;
+        case "semicircle":
+          canvasObject = new this.semicircle({
+            top: Math.min(mouseFrom.y, mouseTo.y),
+            left: Math.min(mouseFrom.x, mouseTo.x),
+            width: Math.abs(mouseFrom.x - mouseTo.x),
+            height: Math.abs(mouseFrom.y - mouseTo.y),
+            stroke: this.options.borderColor, // 描边色
+            fill: this.options.fillColor, // 填充色
+            strokeWidth: 1, // 描边宽度
+            hasBorders: false,
+            hasControls: false
+          });
           break;
         default:
           break;

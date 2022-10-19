@@ -8,7 +8,8 @@ export default {
       mSelectOneType: '', // i-text | group ...
       mSelectId: '', // 选择id
       mSelectIds: [], // 选择id
-      _clipboardContent: ''
+      _clipboardContent: '',
+      semicircle: {}
     }
   },
   created() {
@@ -31,7 +32,9 @@ export default {
       this.mSelectMode = ''
       this.mSelectOneType = ''
     })
+    this.createSemicircle();
   },
+ 
   methods: {
     /**
      * @description: 保存data数据
@@ -105,6 +108,28 @@ export default {
         this._clipboardContent = '';
         // canvas.requestRenderAll();
       });
+    },
+    createSemicircle() {
+      this.semicircle = fabric.util.createClass(fabric.Object, {
+        // 初始化
+        initialize(options) {
+          this.callSuper('initialize', options)
+          this.width = 100
+          this.height = 50
+        },
+        // 渲染
+        _render(ctx) {
+          ctx.strokeStyle = this.stroke || '#333' // 初始化描边颜色
+          ctx.lineWidth = this.strokeWidth || 1 // 初始化描边宽度
+          ctx.fillStyle = this.fill || '#333' // 初始化填充色
+          ctx.beginPath() // 开始绘制路径
+          ctx.arc(0, -25, 50, 0, 180 * Math.PI / 180) // 绘制半圆  
+          ctx.arc(0, -25, 50, Math.PI, Math.PI);
+  
+          ctx.stroke() // 描边
+          ctx.fill() // 填充
+        }
+      })
     }
   }
 }
