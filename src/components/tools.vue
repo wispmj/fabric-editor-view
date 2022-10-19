@@ -283,7 +283,7 @@ export default {
         objectCaching: false
       });
       if (this.pointArray.length == 0) {
-        this.canvas.isDrawingMode = true;
+        // this.canvas.isDrawingMode = true;
         circle.set({
           fill: "red"
         });
@@ -383,7 +383,8 @@ export default {
           opacity: 1,
           hasBorders: false,
           hasControls: false,
-          perPixelTargetFind: true
+          perPixelTargetFind: true,
+          objectCaching: false,
         });
       } else {
         polygon = new fabric.Polyline(points, {
@@ -393,7 +394,8 @@ export default {
           opacity: 1,
           hasBorders: false,
           hasControls: false,
-          perPixelTargetFind: true
+          perPixelTargetFind: true,
+          objectCaching: false
         });
       }
       this.canvas.add(polygon);

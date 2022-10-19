@@ -18,6 +18,7 @@ import { onMounted, ref, nextTick } from 'vue'
 // import { useStore } from 'vuex'
 import { fabric } from 'fabric'
 import select from '@/mixins/select'
+import Edit from '@/plugin/editPolygon'
 
 // const store = useStore()
 
@@ -119,78 +120,11 @@ export default {
     },
     // 编辑线条
     setEdit() {
-      var poly = this.canvas.c.getObjects()[0];
-      this.canvas.c.setActiveObject(poly);
-      poly.edit = !poly.edit;
-      if (poly.edit) {
-        var lastControl = poly.points.length - 1;
-        poly.cornerStyle = 'circle';
-        poly.cornerColor = 'rgba(0,0,255,0.5)';
-        poly.controls = poly.points.reduce((acc, point, index) => {
-          acc['p' + index] = new fabric.Control({
-            positionHandler: this.polygonPositionHandler,
-            actionHandler: this.anchorWrapper(index > 0 ? index - 1 : lastControl, this.actionHandler),
-            actionName: 'modifyPolygon',
-            pointIndex: index
-          });
-          return acc;
-        }, {});
-      } else {
-        poly.cornerColor = 'blue';
-        poly.cornerStyle = 'rect';
-        poly.controls = fabric.Object.prototype.controls;
-      }
-      poly.hasBorders = !poly.edit;
-      this.canvas.c.requestRenderAll();
-    },
-    polygonPositionHandler(dim, finalMatrix, fabricObject) {
-      var x = (fabricObject.points[this.pointIndex].x - fabricObject.pathOffset.x),
-        y = (fabricObject.points[this.pointIndex].y - fabricObject.pathOffset.y);
-      return fabric.util.transformPoint(
-        { x: x, y: y },
-        fabric.util.multiplyTransformMatrices(
-          fabricObject.canvas.viewportTransform,
-          fabricObject.calcTransformMatrix()
-        )
-      );
-    },
-    anchorWrapper(anchorIndex, fn) {
-      return function (eventData, transform, x, y) {
-        var fabricObject = transform.target,
-          absolutePoint = fabric.util.transformPoint({
-            x: (fabricObject.points[anchorIndex].x - fabricObject.pathOffset.x),
-            y: (fabricObject.points[anchorIndex].y - fabricObject.pathOffset.y),
-          }, fabricObject.calcTransformMatrix()),
-          actionPerformed = fn(eventData, transform, x, y),
-          newDim = fabricObject._setPositionDimensions({}),
-          polygonBaseSize = this.getObjectSizeWithStroke(fabricObject),
-          newX = (fabricObject.points[anchorIndex].x - fabricObject.pathOffset.x) / polygonBaseSize.x,
-          newY = (fabricObject.points[anchorIndex].y - fabricObject.pathOffset.y) / polygonBaseSize.y;
-        fabricObject.setPositionByOrigin(absolutePoint, newX + 0.5, newY + 0.5);
-        return actionPerformed;
-      }
-    },
-    actionHandler(eventData, transform, x, y) {
-      var polygon = transform.target,
-        currentControl = polygon.controls[polygon.__corner],
-        mouseLocalPosition = polygon.toLocalPoint(new fabric.Point(x, y), 'center', 'center'),
-        polygonBaseSize = this.getObjectSizeWithStroke(polygon),
-        size = polygon._getTransformedDimensions(0, 0),
-        finalPointPosition = {
-          x: mouseLocalPosition.x * polygonBaseSize.x / size.x + polygon.pathOffset.x,
-          y: mouseLocalPosition.y * polygonBaseSize.y / size.y + polygon.pathOffset.y
-        };
-      polygon.points[currentControl.pointIndex] = finalPointPosition;
-      return true;
-    },
-    getObjectSizeWithStroke(object) {
-      var stroke = new fabric.Point(
-        object.strokeUniform ? 1 / object.scaleX : 1,
-        object.strokeUniform ? 1 / object.scaleY : 1
-      ).multiply(object.strokeWidth);
-      return new fabric.Point(object.width + stroke.x, object.height + stroke.y);
+      Edit(this.canvas.c);
+      this.hiddenMenu()
+      return;
     }
-  },
+  }
 }
 
 
