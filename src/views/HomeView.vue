@@ -48,7 +48,7 @@
             </div>
             <!-- 常用元素 -->
             <div v-show="menuActive === 2" class="left-panel">
-              <tools :canvasObj="canvas" @rigthCilck="rigthCilck"></tools>
+              <tools :canvasObj="canvas" @rigthCilck="rigthCilck" @setDrawType="setDrawType"></tools>
               <!-- <svgEl></svgEl> -->
             </div>
             <!-- 背景设置 -->
@@ -207,6 +207,9 @@ export default {
     rigthCilck(e) {
       this.$refs.contextMenu.canvasOnMouseDown(e);
     },
+    setDrawType(dType) {
+      this.$refs.contextMenu.drawType = dType;
+    }
   }
 };
 </script>

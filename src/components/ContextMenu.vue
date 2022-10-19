@@ -30,7 +30,8 @@ export default {
       menu: null,
       menuVisable: false,
       menuPosition: '',
-      activeEl: null
+      activeEl: null,
+      drawType: ''
     };
   },
   methods: {
@@ -43,7 +44,7 @@ export default {
       // 右键，且在元素上右键
       // button: 1-左键；2-中键；3-右键
       // 在画布上右键，target 为 null
-      if (opt.button === 3) { //&& opt.target
+      if (opt.button === 3 && !this.drawType) { //&& opt.target
         // 获取当前元素
         this.activeEl = opt.target
 

@@ -234,6 +234,7 @@ export default {
     // 开始绘制时，指定绘画种类
     drawTypeChange(e) {
       this.drawType = e;
+      this.$emit('setDrawType', this.drawType);
       this.canvas.skipTargetFind = !!e
       if (e == "pen") {
         // isDrawingMode为true 才可以自由绘画
@@ -254,6 +255,7 @@ export default {
     // 绘制多边形开始，绘制多边形和其他图形不一样，需要单独处理
     drawPolygon() {
       this.drawType = "polygon";
+      this.$emit('setDrawType', this.drawType);
       this.polygonMode = true;
       //这里画的多边形，由顶点与线组成
       this.pointArray = new Array();  // 顶点集合
@@ -401,6 +403,7 @@ export default {
       this.polygonMode = false;
       this.doDrawing = false;
       this.drawType = null;
+      this.$emit('setDrawType', this.drawType);
     },
     drawing(e) {
       if (this.drawingObject) {
