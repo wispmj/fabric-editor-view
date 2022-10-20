@@ -92,14 +92,12 @@ const defaultPosition = {
 export default {
   name: 'ToolBar',
   inject: ['canvas', 'fabric'],
-  props: ['canvasObj'],
   data() {
     return {
       options,
       width: 1280,
       height: 720,
       rect: [],
-      canvas: {},
       showMenu: false,
       x: "",
       y: "",
@@ -131,12 +129,11 @@ export default {
     };
   },
   mounted() {
-    this.canvas = this.canvasObj;
     //  this.canvas.selectionColor = "rgba(0,0,0,0.05)";
-    this.canvas.on("mouse:down", this.mousedown);
-    this.canvas.on("mouse:move", this.mousemove);
-    this.canvas.on("mouse:up", this.mouseup);
-    this.canvas.on("mouse:over", this.mouseover);
+    this.canvas.c.on("mouse:down", this.mousedown);
+    this.canvas.c.on("mouse:move", this.mousemove);
+    this.canvas.c.on("mouse:up", this.mouseup);
+    this.canvas.c.on("mouse:over", this.mouseover);
 
     $(document).contextmenu(function (e) {
       e.preventDefault();
@@ -258,7 +255,7 @@ export default {
 
     deleteObj() {
       this.canvas.getActiveObjects().map(item => {
-        this.canvas.remove(item);
+        this.canvas.c.remove(item);
       });
     },
     transformMouse(mouseX, mouseY) {
@@ -340,8 +337,8 @@ export default {
           evented: false,
           objectCaching: false
         });
-        this.canvas.remove(this.activeShape);
-        this.canvas.add(polygon);
+        this.canvas.c.remove(this.activeShape);
+        this.canvas.c.add(polygon);
         this.activeShape = polygon;
         this.canvas.renderAll();
       } else {
@@ -364,14 +361,14 @@ export default {
           objectCaching: false
         });
         this.activeShape = polygon;
-        this.canvas.add(polygon);
+        this.canvas.c.add(polygon);
       }
       this.activeLine = this.line;
 
       this.pointArray.push(circle);
       this.lineArray.push(this.line);
-      this.canvas.add(this.line);
-      this.canvas.add(circle);
+      this.canvas.c.add(this.line);
+      this.canvas.c.add(circle);
     },
     generatePolygon(isClose) {
       var points = new Array();
@@ -380,12 +377,12 @@ export default {
           x: point.left,
           y: point.top
         });
-        this.canvas.remove(point);
+        this.canvas.c.remove(point);
       });
       this.lineArray.map((line, index) => {
-        this.canvas.remove(line);
+        this.canvas.c.remove(line);
       });
-      this.canvas.remove(this.activeShape).remove(this.activeLine);
+      this.canvas.c.remove(this.activeShape).remove(this.activeLine);
       var polygon = null;
       if (isClose) {
         polygon = new fabric.Polygon(points, {
@@ -410,7 +407,7 @@ export default {
           objectCaching: false
         });
       }
-      this.canvas.add(polygon);
+      this.canvas.c.add(polygon);
 
       this.activeLine = null;
       this.activeShape = null;
@@ -421,7 +418,7 @@ export default {
     },
     drawing(e) {
       if (this.drawingObject) {
-        this.canvas.remove(this.drawingObject);
+        this.canvas.c.remove(this.drawingObject);
       }
       var canvasObject = null;
       var left = this.mouseFrom.x,
@@ -653,7 +650,7 @@ export default {
             borderColor: this.options.borderColor,
             fill: this.options.borderColor,
           });
-          this.canvas.add(this.textbox);
+          this.canvas.c.add(this.textbox);
           this.textbox.enterEditing();
           this.textbox.hiddenTextarea.focus();
           canvasObject = null;
@@ -675,15 +672,15 @@ export default {
 
       if (canvasObject) {
         // canvasObject.index = getCanvasObjectIndex();\
-        this.canvas.add(canvasObject);
-        this.canvas.setActiveObject(canvasObject)
+        this.canvas.c.add(canvasObject);
+        this.canvas.c.setActiveObject(canvasObject)
         this.drawingObject = canvasObject;
       }
     },
 
     Edit() {
       var poly = this.canvas.getObjects()[0];
-      this.canvas.setActiveObject(poly);
+      this.canvas.c.setActiveObject(poly);
       poly.edit = !poly.edit;
       if (poly.edit) {
         var lastControl = poly.points.length - 1;
