@@ -667,8 +667,6 @@ export default {
             stroke: this.options.borderColor, // 描边色
             fill: this.options.fillColor, // 填充色
             strokeWidth: 1, // 描边宽度
-            hasBorders: false,
-            hasControls: false
           });
           break;
         default:

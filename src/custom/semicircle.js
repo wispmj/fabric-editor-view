@@ -14,7 +14,7 @@ function semicircle() {
       ctx.lineWidth = this.strokeWidth || 1 // 初始化描边宽度
       ctx.fillStyle = this.fill // 初始化填充色
       ctx.beginPath() // 开始绘制路径
-      ctx.arc(0, -this.width / 2 , this.height, 0,  Math.PI) // 绘制半圆  
+      ctx.ellipse(0, -this.height / 2, this.width / 2, this.height, 0, 0, Math.PI) // 绘制半圆  
       ctx.stroke() // 描边
       ctx.fill() // 填充
     }
