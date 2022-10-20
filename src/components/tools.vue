@@ -95,19 +95,11 @@ export default {
   data() {
     return {
       options,
-      width: 1280,
-      height: 720,
       rect: [],
       showMenu: false,
-      x: "",
-      y: "",
-
       mouseFrom: {},
       mouseTo: {},
       drawType: null,  //当前绘制图像的种类
-      canvasObjectIndex: 0,
-      textbox: null,
-      rectangleLabel: "warning",
       drawWidth: 2, //笔触宽度
       color: "#E34F51", //画笔颜色
       drawingObject: null, //当前绘制对象
@@ -121,10 +113,6 @@ export default {
       activeShape: false,
       activeLine: "",
       line: {},
-
-      delectKlass: {},
-      imgFile: {},
-      imgSrc: "",
       semicircle: {}
     };
   },
@@ -139,7 +127,6 @@ export default {
       e.preventDefault();
     });
     this.semicircle = semicircle();
-
   },
   methods: {
     // 鼠标点击直线
@@ -147,7 +134,6 @@ export default {
       this.$emit('rigthCilck', e);
       // 如果是右键，结束当前绘制
       if (e.button === 3) {
-        e.e.preventDefault();
         if (this.drawType === "polygon") {
           this.generatePolygon();
         }
@@ -165,10 +151,6 @@ export default {
         this.drawing();
       }
 
-      if (this.textbox) {
-        this.textbox.enterEditing();
-        this.textbox.hiddenTextarea.focus();
-      }
       // 绘制多边形
       if (this.drawType == "polygon") {
         this.canvas.skipTargetFind = false;
@@ -209,17 +191,16 @@ export default {
         return;
       }
       this.moveCount++;
-      var xy = e.pointer || this.transformMouse(e.e.offsetX, e.e.offsetY);
+      var xy = e.absolutePointer || this.transformMouse(e.e.offsetX, e.e.offsetY);
       this.mouseTo.x = xy.x;
       this.mouseTo.y = xy.y;
-      // 多边形与文字框特殊处理
-      if (this.drawType != "text" || this.drawType != "polygon") {
+      // 多边形特殊处理
+      if (this.drawType != "polygon") {
         this.drawing(e);
       }
       if (this.drawType == "polygon") {
         var adsortPoint = this.getAdsortPoint(e.absolutePointer.x, e.absolutePointer.y);
         if (this.activeLine && this.activeLine.class == "line") {
-          // var pointer = this.canvas.getPointer(e.e);
           this.activeLine.set({ x2: adsortPoint.x, y2: adsortPoint.y });
 
           var points = this.activeShape.get("points");
@@ -421,10 +402,10 @@ export default {
         this.canvas.c.remove(this.drawingObject);
       }
       var canvasObject = null;
-      var left = this.mouseFrom.x,
-        top = this.mouseFrom.y,
-        mouseFrom = this.mouseFrom,
-        mouseTo = this.mouseTo;
+      var left = this.mouseFrom.x;
+      var top = this.mouseFrom.y;
+      var mouseFrom = this.mouseFrom;
+      var mouseTo = this.mouseTo;
       switch (this.drawType) {
         case "arrow": //箭头
           var x1 = mouseFrom.x,
@@ -526,28 +507,6 @@ export default {
           if (e.e.shiftKey) {
             mouseTo.x - left > mouseTo.y - top ? mouseTo.y = top + mouseTo.x - left : mouseTo.x = left + mouseTo.y - top
           }
-          var path =
-            "M " +
-            mouseFrom.x +
-            " " +
-            mouseFrom.y +
-            " L " +
-            mouseTo.x +
-            " " +
-            mouseFrom.y +
-            " L " +
-            mouseTo.x +
-            " " +
-            mouseTo.y +
-            " L " +
-            mouseFrom.x +
-            " " +
-            mouseTo.y +
-            " L " +
-            mouseFrom.x +
-            " " +
-            mouseFrom.y +
-            " z";
           canvasObject = new fabric.Rect({
             top: Math.min(mouseFrom.y, mouseTo.y),
             left: Math.min(mouseFrom.x, mouseTo.x),
@@ -638,11 +597,12 @@ export default {
             lockScalingY: true,
             hasRotatingPoint: false,
             transparentCorners: false,
+            hasControls: false,
             cornerSize: 7,
           });
           break;
         case "text": //文本框
-          this.textbox = new fabric.Textbox("", {
+          canvasObject = new fabric.Textbox("", {
             left: mouseFrom.x,
             top: mouseFrom.y - 10,
             // width: 150,
@@ -650,10 +610,6 @@ export default {
             borderColor: this.options.borderColor,
             fill: this.options.borderColor,
           });
-          this.canvas.c.add(this.textbox);
-          this.textbox.enterEditing();
-          this.textbox.hiddenTextarea.focus();
-          canvasObject = null;
           break;
         case "semicircle":
           canvasObject = new this.semicircle({
@@ -677,32 +633,9 @@ export default {
         this.drawingObject = canvasObject;
       }
     },
+    //#region 绘制节点方法
 
-    Edit() {
-      var poly = this.canvas.getObjects()[0];
-      this.canvas.c.setActiveObject(poly);
-      poly.edit = !poly.edit;
-      if (poly.edit) {
-        var lastControl = poly.points.length - 1;
-        poly.cornerStyle = 'circle';
-        poly.cornerColor = 'rgba(0,0,255,0.5)';
-        poly.controls = poly.points.reduce(function (acc, point, index) {
-          acc['p' + index] = new fabric.Control({
-            positionHandler: polygonPositionHandler,
-            actionHandler: anchorWrapper(index > 0 ? index - 1 : lastControl, actionHandler),
-            actionName: 'modifyPolygon',
-            pointIndex: index
-          });
-          return acc;
-        }, {});
-      } else {
-        poly.cornerColor = 'blue';
-        poly.cornerStyle = 'rect';
-        poly.controls = fabric.Object.prototype.controls;
-      }
-      poly.hasBorders = !poly.edit;
-      canvas.requestRenderAll();
-    },
+    //#endregion
     // 寻找吸附点
     getAdsortPoint(pointx, pointy) {
       var x = Math.abs(pointx);
