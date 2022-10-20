@@ -1,11 +1,3 @@
-<!--
- * @Author: 秦少卫
- * @Date: 2022-09-03 19:16:55
- * @LastEditors: 秦少卫
- * @LastEditTime: 2022-09-03 22:55:36
- * @Description: 组合与拆分组合
--->
-
 <template>
   <ButtonGroup size="small">
     <!-- 组合按钮 多选时不可用 -->

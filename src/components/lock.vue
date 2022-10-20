@@ -1,11 +1,3 @@
-<!--
- * @Author: 秦少卫
- * @Date: 2022-09-03 19:16:55
- * @LastEditors: 秦少卫
- * @LastEditTime: 2022-09-04 00:04:40
- * @Description: 锁定元素
--->
-
 <template>
   <i-switch v-if="mSelectMode === 'one'" v-model="isLock" @on-change="doLock" >
       <Icon type="md-lock" slot="open"></Icon>

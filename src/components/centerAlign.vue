@@ -1,11 +1,3 @@
-<!--
- * @Author: 秦少卫
- * @Date: 2022-09-03 19:16:55
- * @LastEditors: 秦少卫
- * @LastEditTime: 2022-09-03 23:55:33
- * @Description: 多元素或单元素对齐方式
--->
-
 <template>
   <ButtonGroup size="small" >
       <!-- 水平集中 -->

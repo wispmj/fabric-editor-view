@@ -1,11 +1,3 @@
-/*
- * @Author: 秦少卫
- * @Date: 2022-09-05 22:21:55
- * @LastEditors: 秦少卫
- * @LastEditTime: 2022-09-05 23:00:29
- * @Description: 工具文件
- */
-
 import FontFaceObserver from 'fontfaceobserver'
 
 /**

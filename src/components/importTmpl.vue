@@ -1,11 +1,3 @@
-<!--
- * @Author: 秦少卫
- * @Date: 2022-09-03 19:16:55
- * @LastEditors: 秦少卫
- * @LastEditTime: 2022-09-07 00:17:35
- * @Description: 导入模板
--->
-
 <template>
 <div style="display:inline-block">
   <Divider plain orientation="left">标题模板</Divider>

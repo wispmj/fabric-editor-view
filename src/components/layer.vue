@@ -1,11 +1,3 @@
-<!--
- * @Author: 秦少卫
- * @Date: 2022-09-03 19:16:55
- * @LastEditors: 秦少卫
- * @LastEditTime: 2022-09-06 23:20:40
- * @Description: 图层面板
--->
-
 <template>
   <div class="box">
     <Divider plain orientation="left" v-if="list.length">图层</Divider>
