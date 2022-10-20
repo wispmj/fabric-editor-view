@@ -143,7 +143,7 @@ export default {
         return;
       }
       // 记录鼠标按下时的坐标
-      var xy = e.pointer || this.transformMouse(e.e.offsetX, e.e.offsetY);
+      var xy = e.absolutePointer || this.transformMouse(e.e.offsetX, e.e.offsetY);
       this.mouseFrom.x = xy.x;
       this.mouseFrom.y = xy.y;
       this.doDrawing = true;
