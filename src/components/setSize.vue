@@ -62,7 +62,7 @@ export default {
   },
   created() {
     this.setSize()
-    this.drawGrid();
+    //this.drawGrid();
   },
   mounted() {
     // this.grid = this.options.grid;

@@ -139,7 +139,6 @@ export default {
         }
 
         this.drawTypeChange("");
-        this.canvas.isDrawingMode = false;
         return;
       }
       // 记录鼠标按下时的坐标
@@ -212,9 +211,9 @@ export default {
           this.activeShape.set({
             points: points
           });
-          this.canvas.renderAll();
+          this.canvas.c.renderAll();
         }
-        this.canvas.renderAll();
+        this.canvas.c.renderAll();
       }
     },
 
@@ -226,12 +225,6 @@ export default {
       this.drawType = e;
       this.$emit('setDrawType', this.drawType);
       this.canvas.skipTargetFind = !!e
-      if (e == "pen") {
-        // isDrawingMode为true 才可以自由绘画
-        this.canvas.isDrawingMode = true;
-      } else {
-        this.canvas.isDrawingMode = false;
-      }
     },
 
     deleteObj() {
@@ -250,7 +243,6 @@ export default {
       //这里画的多边形，由顶点与线组成
       this.pointArray = new Array();  // 顶点集合
       this.lineArray = new Array();  //线集合
-      this.canvas.isDrawingMode = false;
     },
     addPoint(e) {
       //var point = this.canvas.getPointer(e.e)
@@ -273,7 +265,6 @@ export default {
         objectCaching: false
       });
       if (this.pointArray.length == 0) {
-        // this.canvas.isDrawingMode = true;
         circle.set({
           fill: "red"
         });
@@ -321,7 +312,7 @@ export default {
         this.canvas.c.remove(this.activeShape);
         this.canvas.c.add(polygon);
         this.activeShape = polygon;
-        this.canvas.renderAll();
+        this.canvas.c.renderAll();
       } else {
         var polyPoint = [
           {
