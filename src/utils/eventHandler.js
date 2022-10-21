@@ -33,7 +33,6 @@ class EventHandle extends EventEmitter {
             //this.drawGrid2Img('');
             return;
         }
-        context.globalAlpha = 0.5
         // if (this.handler.backgroundImage && this.handler.backgroundImage.getSrc() !== null) {
         //     var bgImg = new Image();
         //     bgImg.src = this.handler.backgroundImage.getSrc();
