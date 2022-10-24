@@ -5,6 +5,7 @@ export default {
     'borderColor': 'black',//边框颜色
     'grid': true,
     'gridSize': 20,
-    'gridColor': 'grey',
-    'adsorbPoint': true
+    'gridColor': '#eeeeee',
+    'adsorbPoint': true,
+    'bgColor': '#fff'
 }

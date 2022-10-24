@@ -10,7 +10,9 @@ class EventHandle extends EventEmitter {
         this.handler.on("selection:created", (e) => this._selected(e));
         this.handler.on("selection:updated", (e) => this._selected(e));
         this.handler.on("selection:cleared", (e) => this._selected(e));
-        this.handler.on("after:render", (e) => this._drawGrid());
+         this.handler.on("after:render", (e) => this._drawGrid());
+       // this.handler.on("before:render", (e) => this._drawGrid());
+
     }
 
     // 暴露单选多选事件
@@ -29,6 +31,7 @@ class EventHandle extends EventEmitter {
     _drawGrid() {
         var context = this.handler.getContext("2d");
         context.save();
+        context.globalAlpha = 0.5;
         if (!this.options.grid) {
             //this.drawGrid2Img('');
             return;
@@ -41,7 +44,7 @@ class EventHandle extends EventEmitter {
 
         var currentCanvasWidth = this.handler.width;
         var currentcanvasHeight = this.handler.height;
-        var gridSize = this.options.gridSize;
+        var gridSize = this.options.gridSize * this.handler.getZoom();
 
         // Drawing vertical lines
         var x;
