@@ -25,7 +25,6 @@
 <script>
 import select from '@/mixins/select'
 import options from '../plugin/options'
-
 export default {
   name: 'ToolBar',
   mixins: [select],
@@ -44,9 +43,7 @@ export default {
     },
   },
   mounted() {
-    this.$nextTick(() => {
-      this._drawGrid();
-    })
+   
   },
   methods: {
     rSet() {
@@ -64,7 +61,6 @@ export default {
         zoomRatio,
       )
       this.zoom = `${Math.round(zoomRatio * 100)}%`
-      this._drawGrid();
     },
     small() {
       let zoomRatio = this.canvas.c.getZoom();
@@ -74,59 +70,7 @@ export default {
         zoomRatio,
       )
       this.zoom = `${Math.round(zoomRatio * 100)}%`
-      this._drawGrid();
     },
-    _drawGrid() {
-      var currentCanvasWidth = this.canvas.c.width / this.canvas.c.getZoom();
-      var currentcanvasHeight = this.canvas.c.height / this.canvas.c.getZoom();
-      // 创建画布作为 网格和背景图片
-      var bgCanvas = document.createElement("canvas");
-      bgCanvas.width = currentCanvasWidth;
-      bgCanvas.height = currentCanvasWidth;
-      var context = bgCanvas.getContext("2d");
-      // 网格线颜色
-      context.strokeStyle = this.options.gridColor;
-      context.clearRect(0, 0, currentCanvasWidth, currentcanvasHeight);
-      if (!this.options.grid) {
-        return;
-      }
-      // 背景
-      if (this.canvas.c.backgroundImage && this.canvas.c.backgroundImage.getSrc() !== null) {
-        bgCanvas.style.background = url(this.canvas.c.backgroundImage.getSrc())
-      }
-
-      var gridSize = this.options.gridSize * this.canvas.c.getZoom();
-
-      // Drawing vertical lines
-      var x;
-      for (x = 0; x <= currentCanvasWidth; x += gridSize) {
-        context.moveTo(x + 0.5, 0);
-        context.lineTo(x + 0.5, currentcanvasHeight);
-      }
-
-      // Drawing horizontal lines
-      var y;
-      for (y = 0; y <= currentcanvasHeight; y += gridSize) {
-        context.moveTo(0, y + 0.5);
-        context.lineTo(currentCanvasWidth, y + 0.5);
-      }
-      context.stroke();
-      this.drawGrid2Img(bgCanvas)
-    },
-    // canvas to image
-    drawGrid2Img(bgCanvas) {
-      var imgStr = bgCanvas.toDataURL("image/png")
-      const imgEl = document.createElement('img');
-      imgEl.src = imgStr;
-      imgEl.onload = () => {
-        this.canvas.c.setBackgroundImage(imgEl.src, this.canvas.c.renderAll.bind(this.canvas.c), {
-          left: 0,
-          top: 0
-        });
-        imgEl.remove()
-        bgCanvas.remove()
-      }
-    }
   }
 };
 </script>

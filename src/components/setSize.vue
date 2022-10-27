@@ -24,9 +24,8 @@
 </template>
 
 <script>
-import { clone } from '@babel/types';
-import { fabric } from 'fabric';
 import options from '../plugin/options'
+import renderCanvasImage from "@/plugin/renderCanvasImage"
 
 const presetConfigSize = [
   {
@@ -62,7 +61,7 @@ export default {
   },
   created() {
     this.setSize()
-    //this.drawGrid();
+    renderCanvasImage(this.canvas.c, this.options)
   },
   mounted() {
     // this.grid = this.options.grid;
@@ -81,62 +80,9 @@ export default {
       this.canvas.c.renderAll()
     },
     drawGrid() {
-      var imageCanvas = document.createElement("canvas");
-      imageCanvas.width = this.canvas.c.width;
-      imageCanvas.height = this.canvas.c.height;
-      var context = imageCanvas.getContext("2d");
-
-      if (!this.options.grid) {
-        this.drawGrid2Img('');
-        return;
-      }
-      //context.globalAlpha = 0.5
-      if (this.canvas.c.backgroundImage != null && this.canvas.c.backgroundImage.getSrc() !== null) {
-        var bgImg = new Image();
-        bgImg.src = this.canvas.c.backgroundImage.getSrc();
-        context.drawImage(bgImg, 0, 0);
-      }
-      
-      var currentCanvasWidth = this.canvas.c.width;
-      var currentcanvasHeight = this.canvas.c.height;
-      var gridSize = this.options.gridSize;
-
-      // Drawing vertical lines
-      var x;
-      for (x = 0; x <= currentCanvasWidth; x += gridSize) {
-        context.moveTo(x + 0.5, 0);
-        context.lineTo(x + 0.5, currentcanvasHeight);
-      }
-
-      // Drawing horizontal lines
-      var y;
-      for (y = 0; y <= currentcanvasHeight; y += gridSize) {
-        context.moveTo(0, y + 0.5);
-        context.lineTo(currentCanvasWidth, y + 0.5);
-      }
-
-      context.strokeStyle = this.options.gridColor;
-      context.stroke();
-      // 转化为背景图片
-      const imgStr = imageCanvas.toDataURL("image/png");// target.cloneNode(true);
-      this.drawGrid2Img(imgStr);
-      imageCanvas.remove();
+      renderCanvasImage(this.canvas.c, this.options)
     },
-    drawGrid2Img(imgStr) {
-      var image = new Image();
-      image.src = imgStr;
-      image.onload = () => {
-        // 可跨域设置
-        const imgInstance = new this.fabric.Image(image, { crossOrigin: 'anonymous' });
-        // 渲染背景
-        this.canvas.c.setBackgroundImage(imgInstance, this.canvas.c.renderAll.bind(this.canvas.c), {
-          scaleX: this.canvas.c.width / imgInstance.width,
-          scaleY: this.canvas.c.width / imgInstance.width,
-        });
-        this.canvas.c.renderAll()
-        this.canvas.c.requestRenderAll();
-      }
-    }
+
   }
 };
 </script>

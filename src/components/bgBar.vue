@@ -6,17 +6,10 @@
         <ColorPicker v-model="color" @on-change="setThisColor" size="small" transfer />
       </FormItem>
       <FormItem label="图片" prop="name">
-        <Button @click="insert" icon="ios-cloud-upload-outline" size="small"
-          >上传背景</Button
-        >
+        <Button @click="insert" icon="ios-cloud-upload-outline" size="small">上传背景</Button>
       </FormItem>
     </Form>
-    <Modal
-      v-model="showModal"
-      title="请选择背景图片"
-      @on-ok="insertImgFile"
-      @on-cancel="showModal = false"
-    >
+    <Modal v-model="showModal" title="请选择背景图片" @on-ok="insertImgFile" @on-cancel="showModal = false">
       <Upload :before-upload="handleUpload" action="#">
         <Button icon="ios-cloud-upload-outline">选择图片文件</Button>
       </Upload>
@@ -26,11 +19,15 @@
 
 <script>
 import { getImgStr } from "@/utils/utils";
+import renderCanvasImage from "@/plugin/renderCanvasImage";
+import options from "@/plugin/options"
+
 export default {
   name: 'bgBar',
   inject: ['canvas', 'fabric'],
   data() {
     return {
+      options,
       showModal: false,
       color: '',
       imgFile: '',
@@ -66,17 +63,8 @@ export default {
     // 设置背景图片
     setBgImg(target) {
       const imgEl = target.cloneNode(true);
-      imgEl.onload = () => {
-        // 可跨域设置
-        const imgInstance = new this.fabric.Image(imgEl, { crossOrigin: 'anonymous' });
-        // 渲染背景
-        this.canvas.c.setBackgroundImage(imgInstance, this.canvas.c.renderAll.bind(this.canvas.c), {
-          scaleX: this.canvas.c.width / imgInstance.width,
-          scaleY: this.canvas.c.width / imgInstance.width,
-        });
-        this.canvas.c.renderAll()
-        this.canvas.c.requestRenderAll();
-      }
+      this.options.bgPic = imgEl.src;
+      renderCanvasImage(this.canvas.c, this.options)
     },
     // 清空文件 展示文件框
     insert() {
@@ -122,6 +110,7 @@ export default {
 /deep/ .ivu-form-item {
   margin-bottom: 0;
 }
+
 .img {
   width: 50px;
   padding: 5px;
@@ -133,9 +122,11 @@ export default {
 
 .color-list {
   padding: 10px 0;
+
   .item {
     padding-bottom: 5px;
   }
+
   span {
     display: inline-block;
     margin-left: 6px;

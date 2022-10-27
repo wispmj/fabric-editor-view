@@ -7,5 +7,8 @@ export default {
     'gridSize': 20,
     'gridColor': '#eeeeee',
     'adsorbPoint': true,
-    'bgColor': '#fff'
+    'bgColor': '#fff',
+    'translatex': 0,
+    'translatey': 0,
+    'bgPic': ''
 }

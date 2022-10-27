@@ -1,5 +1,6 @@
 import EventEmitter from 'events'
 import options from '../plugin/options'
+import renderCanvasImage from '../plugin/renderCanvasImage';
 
 class EventHandle extends EventEmitter {
     options;
@@ -50,6 +51,7 @@ class EventHandle extends EventEmitter {
             this.handler.requestRenderAll()
             this.lastPosX = e.clientX
             this.lastPosY = e.clientY
+            renderCanvasImage(this.handler, this.options, vpt[4], vpt[5])
         }
     }
 
