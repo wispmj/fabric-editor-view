@@ -90,7 +90,7 @@ export default {
         this.drawGrid2Img('');
         return;
       }
-      context.globalAlpha = 0.5
+      //context.globalAlpha = 0.5
       if (this.canvas.c.backgroundImage != null && this.canvas.c.backgroundImage.getSrc() !== null) {
         var bgImg = new Image();
         bgImg.src = this.canvas.c.backgroundImage.getSrc();
