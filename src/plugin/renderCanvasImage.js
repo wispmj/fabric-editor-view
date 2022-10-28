@@ -4,7 +4,7 @@ export default function (canvas, options, translatex = 0, translatey = 0) {
     var currentCanvasWidth = canvas.width * 2 / canvas.getZoom();
     var currentcanvasHeight = canvas.height * 2 / canvas.getZoom();
     // 当前网格大小
-    var gridSize = options.gridSize ;//* canvas.getZoom();
+    var gridSize = options.gridSize;//* canvas.getZoom();
 
     // 创建画布作为 网格和背景图片
     var bgCanvas = document.createElement("canvas");
@@ -22,9 +22,9 @@ export default function (canvas, options, translatex = 0, translatey = 0) {
     var offsetX = 0.25 * currentCanvasWidth - 0.25 * currentCanvasWidth % gridSize;
     var offsetY = 0.25 * currentcanvasHeight - 0.25 * currentcanvasHeight % gridSize;
 
-    if (options.bgPic || (canvas.backgroundImage && canvas.backgroundImage.getSrc() !== null)) {
+    if (options.bgPic) {
         var bgImg = new Image();
-        bgImg.src = options.bgPic || canvas.backgroundImage.getSrc();
+        bgImg.src = options.bgPic;
         context.drawImage(bgImg, offsetX, offsetY);
     }
 
