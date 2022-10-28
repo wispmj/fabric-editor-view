@@ -505,6 +505,7 @@ export default {
             height: Math.abs(mouseFrom.y - mouseTo.y),
             stroke: this.options.borderColor,
             fill: this.options.fillColor,
+            strokeUniform: true
           })
           break;
         case 'gridentRectangle':
