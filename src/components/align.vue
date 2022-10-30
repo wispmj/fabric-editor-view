@@ -142,7 +142,7 @@
 
 <script>
 import select from "@/mixins/select";
-import alignment from "@/lib/VisualCanvas/alignment";
+import Cannvas from "@/lib/visualCanvas/Canvas"
 
 export default {
   name: "ToolBar",
