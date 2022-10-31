@@ -81,8 +81,9 @@
 <script>
 
 import { Canvas } from 'lib/visualCanvas/canvas'
-import { Node } from 'lib/visualNode/node'
-
+// import { Canvas } from '../../../lib/visualCanvas/canvas'
+// import { Node } from 'lib/visualNode/node'
+// import { Canvas } from 'jsdom/lib/jsdom/utils'
 // 导入元素
 import importJSON from '@/components/importJSON.vue'
 import importSvg from '@/components/importSvg.vue'
@@ -121,11 +122,13 @@ import ContextMenu from '@/components/ContextMenu.vue'
 import { fabric } from 'fabric';
 
 const event = new EventHandle()
-const _fcanvas = {}
+const canvas = {}
+const visualCanvas = {}
 export default {
   name: 'HomeView',
   provide: {
-    _fcanvas,
+    visualCanvas,
+    canvas,
     fabric,
     event
   },
@@ -144,10 +147,13 @@ export default {
     this.$Spin.show();
   },
   mounted() {
-    this._fcanvas = _fcanvas.c = new fabric.Canvas('canvas', {
+    this.canvas = canvas.c = new fabric.Canvas('canvas', {
       fireRightClick: true,
       fireMiddleClick: true
     });
+
+    this.visualCanvas = new Canvas('canvas');
+    this.visualCanvas.setfc(this.canvas)
     initAligningGuidelines(this.canvas)
     initCenteringGuidelines(this.canvas)
 

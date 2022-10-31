@@ -1,8 +1,7 @@
 import { fabric } from "fabric";
 import { Alignment } from "./alignment";
-
   /**
-   *
+   * VisualCanvas
    */
   export class Canvas {
     private _fcanvas: fabric.Canvas;
@@ -59,12 +58,15 @@ import { Alignment } from "./alignment";
       return this._fcanvas.getActiveObject();
     }
 
-    getfc(){
-      return this._fcanvas;
-    }
-
-
     setAlignment(alignment){
       this.alignment.setAlignment(alignment);
+    }
+
+    setfc(c){
+      this._fcanvas = c;
+    }
+
+    getfc(){
+      return this._fcanvas;
     }
   }

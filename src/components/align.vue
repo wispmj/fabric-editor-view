@@ -142,12 +142,11 @@
 
 <script>
 import select from "@/mixins/select";
-import Cannvas from "@/lib/visualCanvas/Canvas"
 
 export default {
   name: "ToolBar",
   mixins: [select],
-  inject: { canvas },
+  inject: { visualCanvas, lcanvas },
   data() {
     return {
       id: "",
@@ -160,7 +159,9 @@ export default {
       return this.mSelectMode !== "multiple";
     },
     // 左对齐
-    left() {},
+    left() {
+      this.visualCanvas.setAlignment('left');y
+    },
     // 右对齐
     right() {
       const activeObject = this.canvas.c.getActiveObject();
